@@ -13,11 +13,11 @@
  * \brief The HUD class
  * \note 绿色元素在CSEO+项目不需要显示，在此保留代码在以后完善到其他项目
  */
-class HUD : public QGraphicsView
+class WingLoong2HUD : public QGraphicsView
 {
     Q_OBJECT
 public:
-    HUD(QWidget *parent = nullptr);
+    WingLoong2HUD(QWidget *parent = nullptr);
     /// 设置屏幕分辨率，便于某些在屏幕浮动元素的坐标定位
     void setScreenResolution(int w, int h);
     /// 获取屏幕分辨率

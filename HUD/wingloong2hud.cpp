@@ -16,7 +16,7 @@ static void OSSStyle(LabelIndicator &label)
     label.setPen({Qt::white});
 }
 
-HUD::HUD(QWidget *parent) : QGraphicsView(parent)
+WingLoong2HUD::WingLoong2HUD(QWidget *parent) : QGraphicsView(parent)
 {
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setWindowFlag(Qt::FramelessWindowHint);
@@ -27,32 +27,32 @@ HUD::HUD(QWidget *parent) : QGraphicsView(parent)
     initScene();
 }
 
-void HUD::setScreenResolution(int w, int h)
+void WingLoong2HUD::setScreenResolution(int w, int h)
 {
     m_res.setWidth(w);
     m_res.setHeight(h);
 }
 
-const QSize HUD::getScreenResolution()
+const QSize WingLoong2HUD::getScreenResolution()
 {
     return m_res;
 }
 
-void HUD::setScreenPos(QGraphicsItem *item, int x, int y)
+void WingLoong2HUD::setScreenPos(QGraphicsItem *item, int x, int y)
 {
     auto centerX = m_res.width() / 2;
     auto centerY = m_res.height() / 2;
     item->setPos(x - centerX, y - centerY);
 }
 
-QPoint HUD::screenPos(const QGraphicsItem *item) const
+QPoint WingLoong2HUD::screenPos(const QGraphicsItem *item) const
 {
     auto centerX = m_res.width() / 2;
     auto centerY = m_res.height() / 2;
     return {centerX + int(item->x()), centerY + int(item->y())};
 }
 
-void HUD::showMessage(const QString &message, int timeout)
+void WingLoong2HUD::showMessage(const QString &message, int timeout)
 {
     static QTimer *timer = nullptr;
     if(!timer) {
@@ -70,12 +70,12 @@ void HUD::showMessage(const QString &message, int timeout)
         timer->start(timeout);
 }
 
-void HUD::clearMessage()
+void WingLoong2HUD::clearMessage()
 {
     messageLabel.setVisible(false);
 }
 
-void HUD::activeItem(QGraphicsItem &item)
+void WingLoong2HUD::activeItem(QGraphicsItem &item)
 {
     if(m_activeItems.contains(&item))
         return;
@@ -83,7 +83,7 @@ void HUD::activeItem(QGraphicsItem &item)
     this->scene()->addItem(&item);
 }
 
-void HUD::inactiveItem(QGraphicsItem &item)
+void WingLoong2HUD::inactiveItem(QGraphicsItem &item)
 {
     if(!m_activeItems.contains(&item))
         return;
@@ -92,7 +92,7 @@ void HUD::inactiveItem(QGraphicsItem &item)
     this->scene()->removeItem(&item);
 }
 
-void HUD::setDeclutterLevel(int level)
+void WingLoong2HUD::setDeclutterLevel(int level)
 {
     bool active = level == 0;
     // active or inactive all at first
@@ -208,7 +208,7 @@ void HUD::setDeclutterLevel(int level)
     }
 }
 
-void HUD::triggerFGLHUD(const QString &label)
+void WingLoong2HUD::triggerFGLHUD(const QString &label)
 {
     static QTimer *timer = nullptr;
     if(timer)
@@ -228,18 +228,18 @@ void HUD::triggerFGLHUD(const QString &label)
     FGLIndicator.show();
 }
 
-void HUD::setLaserEnable(const QString &text)
+void WingLoong2HUD::setLaserEnable(const QString &text)
 {
     laserLabel.setText(text);
     laserLabel.show();
 }
 
-void HUD::setLaserDisable()
+void WingLoong2HUD::setLaserDisable()
 {
     laserLabel.hide();
 }
 
-void HUD::setLaserWork(int timeoutSecond)
+void WingLoong2HUD::setLaserWork(int timeoutSecond)
 {
     laserIndicator.trigger(timeoutSecond);
     laserLabel.setBorder({Qt::white});
@@ -250,13 +250,13 @@ void HUD::setLaserWork(int timeoutSecond)
     }
 }
 
-void HUD::setLaserStop()
+void WingLoong2HUD::setLaserStop()
 {
     laserIndicator.stop();
     laserLabel.setBorder(Qt::NoPen);
 }
 
-void HUD::initScene()
+void WingLoong2HUD::initScene()
 {
     auto scene = new QGraphicsScene;
     this->setScene(scene);
