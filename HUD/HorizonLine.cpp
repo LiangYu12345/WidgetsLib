@@ -25,6 +25,6 @@ void HorizonLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     auto boundRect = boundingRect();
     auto w = boundRect.width();
     auto h = boundRect.height();
-    painter->drawLine(-w,-40,-w/20,-40);
-    painter->drawLine(w,-40,w/20,-40);
+    painter->drawLine(-w,0,-w/20,0);
+    painter->drawLine(w,0,w/20,0);
 }

@@ -1,5 +1,5 @@
-﻿#ifndef PITCHATTITUDEBARS_H
-#define PITCHATTITUDEBARS_H
+﻿#ifndef TDBOX_H
+#define TDBOX_H
 
 #include "../widgetslib_global.h"
 
@@ -12,18 +12,17 @@
 /*!
  * \brief The Crosshair class
  */
-class WIDGETSLIB_EXPORT PitchAttitudeBars : public QGraphicsItem
+class WIDGETSLIB_EXPORT TDBox : public QGraphicsItem
 {
 public:
-    PitchAttitudeBars();
-    void setValue(float value);
+    TDBox();
+    void setValue(QString value);
 public:
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 private:
-    float m_value = 5;
-    const float m_lineWidth = 20;
+    QString m_value;
     const float m_textWidth = 40;
 };
-#endif // PITCHATTITUDEBARS_H
+#endif // TDBOX_H

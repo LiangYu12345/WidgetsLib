@@ -29,6 +29,9 @@
 #include "SlantRange.h"
 #include "TimeToSteerpoint.h"
 #include "DistanceToSteerpoint.h"
+#include "LabelBeacon.h"
+#include "PitchAttitudeBars.h"
+
 /*!
  * \brief The HUD class
  * \note 绿色元素在CSEO+项目不需要显示，在此保留代码在以后完善到其他项目
@@ -94,9 +97,11 @@ public: // 为了方便外部调用，综合考虑之后将所有元素公开为
     SteerpointSymbol m_steerpointsymbol;
     GunCross m_guncross;
 
+    PitchAttitudeBars m_pitchattitudebars;
     //中线
     HorizonLine m_horizonline;
-
+    LabelBeacon m_leftlabelbeacon;
+    LabelBeacon m_rightlabelbeacon;
     //中下
     OffsetAimpoint m_offsetaimpoint;
     HeadingScale m_headingscale;
