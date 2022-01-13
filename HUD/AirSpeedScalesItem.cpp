@@ -27,9 +27,9 @@ void AirSpeedScalesItem::setValue(float value)
 
 QRectF AirSpeedScalesItem::boundingRect() const
 {
-    const float w = m_lineWidth + m_textWidth;
+    const float w = 80;
     const float h = m_pixPerDegree * m_range;
-    return {-m_textWidth, -h/2, w, h};       //-40 -200 60 400 //-40 -160 60 320
+    return {-w/2, -h/2, w, h + 8};
 }
 
 void AirSpeedScalesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -43,19 +43,24 @@ void AirSpeedScalesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->setClipRect(boundingRect());
     float start = m_value - m_range / 2;
     float end = m_value + m_range / 2;
-    // clamp start to 10 times like as 10 20 30 etc
-    for(int i = start; i <= end; i++) {
+
+    start = start / 100 * 100;
+
+    for(int i = start; i <= end; i += 10) {
         auto y = (m_value-i) * m_pixPerDegree;
-        if(i % 10 == 0) {
+        if(i % 50 == 0) {
             QFontMetricsF metrics(painter->font());
-            QString text = QString::number(i);
+            auto temp = i / 10;
+            QString text = QString::number(temp);
             auto textBound = metrics.boundingRect(text);
             painter->drawLine(0, y, m_lineWidth, y);
-            painter->drawText(QRectF(-m_textWidth, y-textBound.height()/2, m_textWidth, textBound.height()), Qt::AlignCenter, text);
-        }
-        else if(i % 5 == 0)
-        {
-            painter->drawLine(0, y, m_lineWidth, y);
+            if(i % 100 == 0)
+            {
+                if(i == m_value)
+                    ;
+                else
+                    painter->drawText(QRectF(-m_textWidth, y-textBound.height()/2, m_textWidth, textBound.height()), Qt::AlignCenter, text);
+            }
         }
         else
             painter->drawLine(m_lineWidth/2, y, m_lineWidth, y);

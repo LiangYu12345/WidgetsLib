@@ -11,7 +11,7 @@ SteerpointSymbol::SteerpointSymbol()
 
 QRectF SteerpointSymbol::boundingRect() const
 {
-    return QRectF(-5,-5,10,10);
+    return QRectF(-7,-7,14,14);
 }
 
 void SteerpointSymbol::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

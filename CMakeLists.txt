@@ -64,6 +64,31 @@ add_library(${PROJECT_NAME} SHARED
   HUD/SteerpointSymbol.cpp
   HUD/TimeToSteerpoint.h
   HUD/TimeToSteerpoint.cpp
+  HUD/LabelBeacon.h
+  HUD/LabelBeacon.cpp
+
+  HUD/MissileReticle.h
+  HUD/MissileReticle.cpp
+  HUD/TargetAspect.h
+  HUD/TargetAspect.cpp
+  HUD/Aim-9MissileDiamond.h
+  HUD/Aim-9MissileDiamond.cpp
+  HUD/T-DBox.h
+  HUD/T-DBox.cpp
+  HUD/TargetRange.h
+  HUD/TargetRange.cpp
+  HUD/AAMissileType.h
+  HUD/AAMissileType.cpp
+  HUD/MleRange.h
+  HUD/MleRange.cpp
+  HUD/MissileLaunchEnvelope.h
+  HUD/MissileLaunchEnvelope.cpp
+  HUD/TargetClosureRate.h
+  HUD/TargetClosureRate.cpp
+  HUD/Pre-launchAim-9TimeOfFlight.h
+  HUD/Pre-launchAim-9TimeOfFlight.cpp
+  HUD/TargetSlantRange.h
+  HUD/TargetSlantRange.cpp
 )
 add_library(Lib::Widgets ALIAS ${PROJECT_NAME})
 

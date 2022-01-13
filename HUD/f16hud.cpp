@@ -233,26 +233,26 @@ void F16HUD::initScene()
 
     // 左
     activeItem(m_airspeedscales);
-    m_airspeedscales.setValue(47);
-    m_airspeedscales.setPos(-480,0);
+    m_airspeedscales.setValue(480);
+    m_airspeedscales.setPos(-480,-20);
 
     activeItem(m_soisymbol);
-    m_soisymbol.setPos(-460,-200);
+    m_soisymbol.setPos(-460,-240);
 
     activeItem(m_currentg);
-    m_currentg.setPos(-440,-180);
+    m_currentg.setPos(-440,-200);
     m_currentg.setValue(1.0);
     // 左下
     activeItem(m_maxgs);
-    m_maxgs.setPos(-440,280);
+    m_maxgs.setPos(-440,300);
     m_maxgs.setValue(2.6);
 
     activeItem(m_operatingmode);
-    m_operatingmode.setPos(-440,300);
+    m_operatingmode.setPos(-440,330);
     m_operatingmode.setValue(u8"NAV");
 
     activeItem(m_machnumber);
-    m_machnumber.setPos(-365,275);
+    m_machnumber.setPos(-365,280);
     m_machnumber.setValue(0.88);
 
     activeItem(m_masterarm);
@@ -275,9 +275,23 @@ void F16HUD::initScene()
     activeItem(m_steerpointsymbol);
     m_steerpointsymbol.setPos(200,-100);
 
+    activeItem(m_pitchattitudebars);
+    m_pitchattitudebars.setPos(0,-50);
+
+
     //中
     activeItem(m_horizonline);
-    m_horizonline.setPos(0,0);
+    m_horizonline.setPos(0,-40);
+
+    activeItem(m_leftlabelbeacon);
+    m_leftlabelbeacon.setPos(-600,-80);
+    m_leftlabelbeacon.setDirection(4);
+    m_leftlabelbeacon.setValue(u8"480");
+
+    activeItem(m_rightlabelbeacon);
+    m_rightlabelbeacon.setPos(480,-80);
+    m_rightlabelbeacon.setDirection(3);
+    m_rightlabelbeacon.setValue(u8"12,500");
 
     //中下
     activeItem(m_rollindicator);
@@ -291,7 +305,7 @@ void F16HUD::initScene()
 
     // 右
     activeItem(m_baroaltitudescales);
-    m_baroaltitudescales.setPos(480,0);
+    m_baroaltitudescales.setPos(480,-20);
     m_baroaltitudescales.setValue(12500);
 
     //右下
