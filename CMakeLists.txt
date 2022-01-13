@@ -1,6 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.5)
 
 project(WidgetsLib LANGUAGES CXX)
+set(CMAKE_DEBUG_POSTFIX d)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
@@ -9,10 +10,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
-add_library(WidgetsLib SHARED
+add_library(${PROJECT_NAME} SHARED
   widgetslib_global.h
+  Button/dragbutton.h
+  Button/dragbutton.cpp
   HUD/huditem.h
   HUD/huditem.cpp
   HUD/f16hud.h
@@ -66,11 +67,14 @@ add_library(WidgetsLib SHARED
 )
 add_library(Lib::Widgets ALIAS ${PROJECT_NAME})
 
+
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 #
-target_link_libraries(WidgetsLib PRIVATE Qt5::Widgets)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
 
 #
-target_compile_definitions(WidgetsLib PRIVATE WIDGETSLIB_LIBRARY)
+target_compile_definitions(${PROJECT_NAME} PRIVATE WIDGETSLIB_LIBRARY)
 
 #
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION install)
