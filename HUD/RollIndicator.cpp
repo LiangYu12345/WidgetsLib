@@ -55,12 +55,12 @@ void f16RollIndicator::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     start = int(start / 5) * 5;
     painter->save();
     painter->rotate(start - m_value);
-    for(int i = start; i <= end; i+=5) {
-        if(i % 10 == 0)
+    for(int i = start; i <= end; i+=10) {
+        if(i % 20 == 0)
             painter->drawLine(0, m_radius, 0, m_radius - m_lineLen);
         else
             painter->drawLine(0, m_radius-m_lineLen/2, 0, m_radius - m_lineLen);
-        painter->rotate(5);
+        painter->rotate(10);
     }
     painter->restore();
     const float xDelta = m_lineLen / 4;

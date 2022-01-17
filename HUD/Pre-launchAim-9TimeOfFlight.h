@@ -22,7 +22,7 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 private:
-    QString m_value;
+    QString m_value = u8"06";
     const float m_textWidth = 40;
 };
 #endif // PRELAUNCHAIM9TIMEOFFLIGHT_H

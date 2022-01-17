@@ -35,6 +35,7 @@ QRectF LabelBeacon::boundingRect() const
        return QRectF(-50,-60,100,120);
     else if(m_direction == 4)
        return QRectF(-50,-60,100,120);
+    return QRectF();
 }
 
 void LabelBeacon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

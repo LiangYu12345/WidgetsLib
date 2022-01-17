@@ -23,6 +23,6 @@ public:
 
 private:
     QString m_value;
-    const float m_textWidth = 40;
+    const float m_lineWidth = 40;
 };
 #endif // MISSILELAUNCHENVELOPE_H

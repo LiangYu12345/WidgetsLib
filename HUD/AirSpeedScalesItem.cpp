@@ -27,8 +27,8 @@ void AirSpeedScalesItem::setValue(float value)
 
 QRectF AirSpeedScalesItem::boundingRect() const
 {
-    const float w = 80;
-    const float h = m_pixPerDegree * m_range;
+    const qreal w = 80;
+    const qreal h = m_pixPerDegree * m_range;
     return {-w/2, -h/2, w, h + 8};
 }
 
@@ -44,7 +44,7 @@ void AirSpeedScalesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     float start = m_value - m_range / 2;
     float end = m_value + m_range / 2;
 
-    start = start / 100 * 100;
+    start = int(start / 100) * 100;
 
     for(int i = start; i <= end; i += 10) {
         auto y = (m_value-i) * m_pixPerDegree;

@@ -18,7 +18,7 @@ public:
     f16RollIndicator();
     /// 设置跨度
     void setRange(float range);
-    /// 设置中心数值
+    /// 设置中心数值    输入值{-180，180}
     void setValue(float value);
     /// 设置圆环半径
     void setRadius(float radius);

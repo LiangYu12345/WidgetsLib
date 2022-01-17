@@ -27,9 +27,9 @@ void HeadingScale::setValue(float value)
 
 QRectF HeadingScale::boundingRect() const
 {
-    const float w = m_pixPerDegree * m_range;
-    const float h = m_lineHeight + m_textHeight;
-    return {-w/2, -m_textHeight, w, h};
+    const float w = m_pixPerDegree * m_range + 22;
+    const float h = 100;
+    return {-w/2, -50, w, h};
 }
 
 void HeadingScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -37,7 +37,6 @@ void HeadingScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    painter->setBrush(Qt::green);
     painter->setPen(QPen(Qt::green, 3));
     painter->setFont(QFont("Microsoft Yahei", 16));
     painter->setClipRect(boundingRect());
@@ -46,19 +45,30 @@ void HeadingScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     int end = m_value + m_range / 2;
     for(int i = start; i <= end; i+=5) {
         int value = i;
-        if(value < 0)
+        if(value < 0)\
+
+
             value += 360;
         else if(value > 360)
             value -= 360;
         auto x = i * m_pixPerDegree;
         if(value % 10 == 0) {
             QFontMetricsF metrics(painter->font());
-            QString text = QString::number(value);
+            QString text =QString("0")+QString::number(value);
             auto textBound = metrics.boundingRect(text);
             painter->drawLine(x, 0, x, m_lineHeight);
-            painter->drawText(QRectF({x - textBound.width()/2, -m_textHeight}, textBound.size()), Qt::AlignHCenter|Qt::AlignBottom, text);
+            if(m_value == value)
+            {
+                painter->drawRect(QRectF({x - textBound.width()/2 - 5, m_textHeight/2}, textBound.size() + QSize(10,0)));
+                painter->drawText(QRectF({x - textBound.width()/2 - 5, m_textHeight/2}, textBound.size() + QSize(10,0)), Qt::AlignHCenter|Qt::AlignBottom, text);
+            }
+            else {
+                QString text =QString::number(value);
+                auto textBound = metrics.boundingRect(text);
+                painter->drawText(QRectF({x - textBound.width()/2, m_textHeight/2}, textBound.size()), Qt::AlignHCenter|Qt::AlignBottom, text);
+            }
         }
         else
-            painter->drawLine(x, m_lineHeight/2, x, m_lineHeight);
+            painter->drawLine(x, 0, x, m_lineHeight / 2);
     }
 }

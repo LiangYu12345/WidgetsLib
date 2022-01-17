@@ -18,7 +18,7 @@ public:
     AirSpeedScalesItem();
     /// 设置跨度
     void setRange(float range);
-    /// 设置中心数值
+    /// 设置数值
     void setValue(float value);
 
 public:

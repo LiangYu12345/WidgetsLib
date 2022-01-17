@@ -32,5 +32,6 @@ void PrelaunchAim9TimeOfFlight::paint(QPainter *painter, const QStyleOptionGraph
 
     QFontMetricsF metrics(painter->font());
     auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    painter->drawLine(0,0,textBound.width(),0);
 }

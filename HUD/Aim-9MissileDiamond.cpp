@@ -19,7 +19,7 @@ void Aim9MissileDiamond::setValue(QString value)
 
 QRectF Aim9MissileDiamond::boundingRect() const
 {
-    return QRectF();
+    return QRectF(-30,-30,60,60);
 }
 
 void Aim9MissileDiamond::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -27,10 +27,19 @@ void Aim9MissileDiamond::paint(QPainter *painter, const QStyleOptionGraphicsItem
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    painter->setPen(QPen(Qt::green));
+    painter->setPen(QPen(Qt::green,2));
     painter->setFont(QFont("Microsoft Yahei", 16));
 
-    QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    auto boundRect = boundingRect();
+    auto w = boundRect.width();
+    auto h = boundRect.height();
+
+    //QFontMetricsF metrics(painter->font());
+    //auto textBound = metrics.boundingRect(m_value);
+
+    painter->drawRect(-w/2,-h/2,w,h);
+    painter->save();
+    painter->rotate(45);
+    painter->drawRect(-w*2/3/2,-h*2/3/2,w*2/3,h*2/3);
+    painter->restore();
 }

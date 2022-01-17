@@ -9,7 +9,7 @@ MleRange::MleRange()
 
 }
 
-void MleRange::setValue(QString value)
+void MleRange::setValue(double value)
 {
     if(m_value == value)
         return;
@@ -31,6 +31,7 @@ void MleRange::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setFont(QFont("Microsoft Yahei", 16));
 
     QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    auto textBound = metrics.boundingRect(QString::number(m_value));
+    painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, QString::number(m_value));
+    painter->drawLine(0,textBound.height(),textBound.width(),textBound.height());
 }
