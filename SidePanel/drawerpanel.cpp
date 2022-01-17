@@ -1,10 +1,10 @@
-﻿#include "drawerwidget.h"
+﻿#include "drawerpanel.h"
 #include <QStyleOption>
 #include <QPainter>
 #include <QDebug>
 #include <QtMath>
 
-DrawerWidget::DrawerWidget(QWidget *parent) : QWidget{parent},
+DrawerPanel::DrawerPanel(QWidget *parent) : QWidget{parent},
     m_align(Qt::AlignRight),
     m_content(nullptr)
 {
@@ -13,10 +13,10 @@ DrawerWidget::DrawerWidget(QWidget *parent) : QWidget{parent},
     m_anim->setEasingCurve(QEasingCurve::OutCubic);
     m_anim->setDuration(500);
 
-    connect(m_button, &QToolButton::clicked, this, &DrawerWidget::toggle);
+    connect(m_button, &QToolButton::clicked, this, &DrawerPanel::toggle);
 }
 
-void DrawerWidget::setAlignment(const QPoint &pos, Qt::Alignment align)
+void DrawerPanel::setAlignment(const QPoint &pos, Qt::Alignment align)
 {
     m_basePos = pos;
     m_align = align;
@@ -25,13 +25,13 @@ void DrawerWidget::setAlignment(const QPoint &pos, Qt::Alignment align)
     this->move(computePos(m_isOpened, align));
 }
 
-void DrawerWidget::setText(const QString &text)
+void DrawerPanel::setText(const QString &text)
 {
     m_button->setText(text);
     updateLayout();
 }
 
-void DrawerWidget::setIcon(const QIcon &icon)
+void DrawerPanel::setIcon(const QIcon &icon)
 {
     m_button->setIcon(icon);
     switch (m_align) {
@@ -47,14 +47,14 @@ void DrawerWidget::setIcon(const QIcon &icon)
     updateLayout();
 }
 
-void DrawerWidget::setContent(QWidget *widget)
+void DrawerPanel::setContent(QWidget *widget)
 {
     m_content = widget;
     m_content->setParent(this);
     updateLayout();
 }
 
-void DrawerWidget::open()
+void DrawerPanel::open()
 {
     m_isOpened = true;
 
@@ -66,7 +66,7 @@ void DrawerWidget::open()
     m_anim->start();
 }
 
-void DrawerWidget::close()
+void DrawerPanel::close()
 {
     m_isOpened = false;
 
@@ -78,7 +78,7 @@ void DrawerWidget::close()
     m_anim->start();
 }
 
-void DrawerWidget::toggle()
+void DrawerPanel::toggle()
 {
     if(m_isOpened)
         close();
@@ -86,7 +86,7 @@ void DrawerWidget::toggle()
         open();
 }
 
-QSize DrawerWidget::sizeHint() const
+QSize DrawerPanel::sizeHint() const
 {
     QSize size;
     auto buttonSizeHint = m_button->sizeHint();
@@ -105,7 +105,7 @@ QSize DrawerWidget::sizeHint() const
 }
 
 
-void DrawerWidget::paintEvent(QPaintEvent *event)
+void DrawerPanel::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
     QStyleOption opt;
@@ -114,14 +114,14 @@ void DrawerWidget::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void DrawerWidget::resizeEvent(QResizeEvent *event)
+void DrawerPanel::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
     updateLayout();
     this->move(computePos(m_isOpened, m_align));
 }
 
-QPoint DrawerWidget::computePos(bool open, Qt::Alignment align)
+QPoint DrawerPanel::computePos(bool open, Qt::Alignment align)
 {
     auto btnSize= m_button->sizeHint();
     auto btnWidth = btnSize.width();
@@ -166,7 +166,7 @@ QPoint DrawerWidget::computePos(bool open, Qt::Alignment align)
     return pos;
 }
 
-void DrawerWidget::updateLayout()
+void DrawerPanel::updateLayout()
 {
     auto btnSize= m_button->sizeHint();
     auto btnWidth = btnSize.width();
