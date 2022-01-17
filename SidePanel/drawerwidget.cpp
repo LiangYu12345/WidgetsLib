@@ -2,16 +2,18 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <QDebug>
+#include <QtMath>
 
 DrawerWidget::DrawerWidget(QWidget *parent) : QWidget{parent},
+    m_align(Qt::AlignRight),
     m_content(nullptr)
 {
-    m_button = new QPushButton(this);
+    m_button = new QToolButton(this);
     m_anim = new QPropertyAnimation(this, "pos", this);
     m_anim->setEasingCurve(QEasingCurve::OutCubic);
     m_anim->setDuration(500);
 
-    connect(m_button, &QPushButton::clicked, this, &DrawerWidget::toggle);
+    connect(m_button, &QToolButton::clicked, this, &DrawerWidget::toggle);
 }
 
 void DrawerWidget::setAlignment(const QPoint &pos, Qt::Alignment align)
@@ -19,10 +21,8 @@ void DrawerWidget::setAlignment(const QPoint &pos, Qt::Alignment align)
     m_basePos = pos;
     m_align = align;
     updateLayout();
-    if(m_isOpened)
-        open();
-    else
-        close();
+
+    this->move(computePos(m_isOpened, align));
 }
 
 void DrawerWidget::setText(const QString &text)
@@ -34,6 +34,16 @@ void DrawerWidget::setText(const QString &text)
 void DrawerWidget::setIcon(const QIcon &icon)
 {
     m_button->setIcon(icon);
+    switch (m_align) {
+    case Qt::AlignLeft:
+    case Qt::AlignRight:
+        m_button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        break;
+    case Qt::AlignTop:
+    case Qt::AlignBottom:
+        m_button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        break;
+    }
     updateLayout();
 }
 
@@ -48,32 +58,8 @@ void DrawerWidget::open()
 {
     m_isOpened = true;
 
-    auto btnSize= m_button->sizeHint();
-    auto btnWidth = btnSize.width();
-    auto btnHeight = btnSize.height();
-    auto width = this->width();
-    auto height = this->height();
-
-    QPoint startPos;
-    QPoint endPos;
-    switch (m_align) {
-    case Qt::AlignLeft: {
-        startPos = m_basePos - QPoint(btnWidth, 0);
-        endPos = m_basePos - QPoint(width, 0);
-    } break;
-    case Qt::AlignRight: {
-        startPos = m_basePos - QPoint(width - btnWidth, 0);
-        endPos = m_basePos;
-    } break;
-    case Qt::AlignTop: {
-        startPos = m_basePos - QPoint(0, btnHeight);
-        endPos = m_basePos - QPoint(0, height);
-    } break;
-    case Qt::AlignBottom: {
-        startPos = m_basePos - QPoint(0, height - btnHeight);
-        endPos = m_basePos;
-    } break;
-    }
+    QPoint startPos = computePos(false, m_align);
+    QPoint endPos = computePos(true, m_align);
 
     m_anim->setStartValue(startPos);
     m_anim->setEndValue(endPos);
@@ -84,32 +70,8 @@ void DrawerWidget::close()
 {
     m_isOpened = false;
 
-    auto btnSize= m_button->sizeHint();
-    auto btnWidth = btnSize.width();
-    auto btnHeight = btnSize.height();
-    auto width = this->width();
-    auto height = this->height();
-
-    QPoint startPos;
-    QPoint endPos;
-    switch (m_align) {
-    case Qt::AlignLeft: {
-        startPos = m_basePos - QPoint(width, 0);
-        endPos = m_basePos - QPoint(btnWidth, 0);
-    } break;
-    case Qt::AlignRight: {
-        startPos = m_basePos;
-        endPos = m_basePos - QPoint(width - btnWidth, 0);
-    } break;
-    case Qt::AlignTop: {
-        startPos = m_basePos - QPoint(0, height);
-        endPos = m_basePos - QPoint(0, btnHeight);
-    } break;
-    case Qt::AlignBottom: {
-        startPos = m_basePos;
-        endPos = m_basePos - QPoint(0, height - btnHeight);
-    } break;
-    }
+    QPoint startPos = computePos(true, m_align);
+    QPoint endPos = computePos(false, m_align);
 
     m_anim->setStartValue(startPos);
     m_anim->setEndValue(endPos);
@@ -124,6 +86,24 @@ void DrawerWidget::toggle()
         open();
 }
 
+QSize DrawerWidget::sizeHint() const
+{
+    QSize size;
+    auto buttonSizeHint = m_button->sizeHint();
+    auto contentSizeHint = m_content ? m_content->sizeHint() : buttonSizeHint;
+    switch (m_align) {
+    case Qt::AlignLeft:
+    case Qt::AlignRight: {
+        size = {contentSizeHint.width() + buttonSizeHint.width(), qMax(buttonSizeHint.height(), contentSizeHint.height())};
+    } break;
+    case Qt::AlignTop:
+    case Qt::AlignBottom: {
+        size = {qMax(buttonSizeHint.width(), contentSizeHint.width()), buttonSizeHint.height() + contentSizeHint.height()};
+    } break;
+    }
+    return size;
+}
+
 
 void DrawerWidget::paintEvent(QPaintEvent *event)
 {
@@ -132,6 +112,58 @@ void DrawerWidget::paintEvent(QPaintEvent *event)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void DrawerWidget::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    updateLayout();
+    this->move(computePos(m_isOpened, m_align));
+}
+
+QPoint DrawerWidget::computePos(bool open, Qt::Alignment align)
+{
+    auto btnSize= m_button->sizeHint();
+    auto btnWidth = btnSize.width();
+    auto btnHeight = btnSize.height();
+    auto width = this->width();
+    auto height = this->height();
+
+    QPoint pos;
+    if(open) {
+        switch (align) {
+        case Qt::AlignLeft: {
+            pos = m_basePos - QPoint(width, 0);
+        } break;
+        case Qt::AlignRight: {
+            pos = m_basePos;
+        } break;
+        case Qt::AlignTop: {
+            pos = m_basePos - QPoint(0, height);
+        } break;
+        case Qt::AlignBottom: {
+            pos = m_basePos;
+        } break;
+        }
+    }
+    else {  // close
+        switch (align) {
+        case Qt::AlignLeft: {
+            pos = m_basePos - QPoint(btnWidth, 0);
+        } break;
+        case Qt::AlignRight: {
+            pos = m_basePos - QPoint(width - btnWidth, 0);
+        } break;
+        case Qt::AlignTop: {
+            pos = m_basePos - QPoint(0, btnHeight);
+        } break;
+        case Qt::AlignBottom: {
+            pos = m_basePos - QPoint(0, height - btnHeight);
+        } break;
+        }
+    }
+
+    return pos;
 }
 
 void DrawerWidget::updateLayout()
@@ -144,7 +176,7 @@ void DrawerWidget::updateLayout()
     switch (m_align) {
     case Qt::AlignLeft: {
         m_button->setGeometry(0, (height - btnHeight)/2, btnWidth, btnHeight);
-        if(m_content) m_content->setGeometry(btnWidth, 0, width, height);
+        if(m_content) m_content->setGeometry(btnWidth, 0, width - btnWidth, height);
     } break;
     case Qt::AlignRight: {
         if(m_content) m_content->setGeometry(0, 0, width-btnWidth, height);

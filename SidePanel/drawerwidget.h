@@ -3,11 +3,12 @@
 #include "widgetslib_global.h"
 
 #include <QWidget>
-#include <QPushButton>
+#include <QToolButton>
 #include <QPropertyAnimation>
 
 /*!
  * \brief 带按钮的抽屉式侧边栏
+ * \note 拖拽按钮为QToolButton
  */
 class WIDGETSLIB_EXPORT DrawerWidget : public QWidget
 {
@@ -30,12 +31,17 @@ public:
     /// 切换开合状态
     void toggle();
 
+public:
+    virtual QSize sizeHint() const override;
+
 signals:
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
 
 private:
+    QPoint computePos(bool open, Qt::Alignment align);
     void updateLayout();
 
 
@@ -44,7 +50,7 @@ private:
     bool          m_isOpened;
     QPoint        m_basePos;    ///< 抽屉屋位置
     Qt::Alignment m_align;
-    QPushButton   *m_button;
+    QToolButton  *m_button;
     QPropertyAnimation *m_anim;
 
     // External
