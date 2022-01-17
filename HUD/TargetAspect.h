@@ -23,6 +23,7 @@ public:
 
 private:
     QString m_value;
-    const float m_textWidth = 40;
+    const float m_lineLen = 20;
+    float m_radius = 20;
 };
 #endif // TARGETASPECT_H

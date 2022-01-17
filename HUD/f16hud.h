@@ -32,6 +32,17 @@
 #include "LabelBeacon.h"
 #include "PitchAttitudeBars.h"
 
+#include "MissileReticle.h"
+#include "TargetAspect.h"
+#include "Aim-9MissileDiamond.h"
+#include "T-DBox.h"
+#include "TargetRange.h"
+#include "AAMissileType.h"
+#include "MleRange.h"
+#include "MissileLaunchEnvelope.h"
+#include "TargetClosureRate.h"
+#include "Pre-launchAim-9TimeOfFlight.h"
+#include "TargetSlantRange.h"
 /*!
  * \brief The HUD class
  * \note 绿色元素在CSEO+项目不需要显示，在此保留代码在以后完善到其他项目
@@ -114,6 +125,20 @@ public: // 为了方便外部调用，综合考虑之后将所有元素公开为
     SlantRange m_slantrange;
     TimeToSteerpoint m_timetosteerpoint;
     DistanceToSteerpoint m_distancetosteerpoint;
+
+
+    //中
+    MissileReticle m_missilereticle;
+    //TargetAspect m_targetaspect;
+    Aim9MissileDiamond m_aim9missilediamond;
+    TDBox m_tdbox;
+    TargetRange m_targetrange;
+    AAMissileType m_aamissiletype;
+    MleRange m_mlerange;
+    MissileLaunchEnvelope m_missilelaunchenvelope;
+    TargetClosureRate m_targetclosurerate;
+    PrelaunchAim9TimeOfFlight m_prelaunchaim9timeofflight;
+    TargetSlantRange m_targetslantrange;
 private:
     void initScene();
 

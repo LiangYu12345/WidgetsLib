@@ -9,11 +9,27 @@ TargetSlantRange::TargetSlantRange()
 
 }
 
-void TargetSlantRange::setValue(QString value)
+void TargetSlantRange::setValueFirst(QString value)
 {
-    if(m_value == value)
+    if(m_valuefirst == value)
         return;
-    m_value = value;
+    m_valuefirst = value;
+    update();
+}
+
+void TargetSlantRange::setValueSecond(QString value)
+{
+    if(m_valuesecond == value)
+        return;
+    m_valuesecond = value;
+    update();
+}
+
+void TargetSlantRange::setValueThird(QString value)
+{
+    if(m_valuethird == value)
+        return;
+    m_valuethird = value;
     update();
 }
 
@@ -31,6 +47,10 @@ void TargetSlantRange::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->setFont(QFont("Microsoft Yahei", 16));
 
     QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    auto textBoundfirst = metrics.boundingRect(m_valuefirst);
+    painter->drawText(QRectF(0, 0, textBoundfirst.width(), textBoundfirst.height()), Qt::AlignCenter, m_valuefirst);
+    auto textBoundsecond = metrics.boundingRect(m_valuesecond);
+    painter->drawText(QRectF(0, textBoundfirst.height(), textBoundsecond.width(), textBoundsecond.height()), Qt::AlignCenter, m_valuesecond);
+    auto textBoundthird = metrics.boundingRect(m_valuethird);
+    painter->drawText(QRectF(0, textBoundfirst.height() + textBoundsecond.height(), textBoundthird.width(), textBoundthird.height()), Qt::AlignCenter, m_valuethird);
 }

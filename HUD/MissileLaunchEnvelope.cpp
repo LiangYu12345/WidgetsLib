@@ -19,7 +19,7 @@ void MissileLaunchEnvelope::setValue(QString value)
 
 QRectF MissileLaunchEnvelope::boundingRect() const
 {
-    return QRectF();
+    return QRectF(-25,-100,50,200);
 }
 
 void MissileLaunchEnvelope::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -27,10 +27,23 @@ void MissileLaunchEnvelope::paint(QPainter *painter, const QStyleOptionGraphicsI
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
+    auto boundRect = boundingRect();
+    auto w = boundRect.width();
+    auto h = boundRect.height();
+
     painter->setPen(QPen(Qt::green));
     painter->setFont(QFont("Microsoft Yahei", 16));
 
     QFontMetricsF metrics(painter->font());
     auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+
+    painter->setPen(QPen(Qt::green,4));
+    painter->drawLine(-m_lineWidth/4,-h/2,m_lineWidth/4,-h/2);
+    painter->drawLine(-m_lineWidth/4,h/2,m_lineWidth/4,h/2);
+
+    painter->setPen(QPen(Qt::green,2));
+    painter->drawLine(-m_lineWidth/4,-h/2,-m_lineWidth/4,h/2);
+    painter->drawLine(-m_lineWidth/4,-h/4,m_lineWidth/4,-h/4);
+    painter->drawLine(m_lineWidth/4,-h/4,m_lineWidth/4,h/3);
+    painter->drawLine(-m_lineWidth/4,h/3,m_lineWidth/4,h/3);
 }

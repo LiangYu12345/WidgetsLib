@@ -19,7 +19,7 @@ void MissileReticle::setValue(QString value)
 
 QRectF MissileReticle::boundingRect() const
 {
-    return QRectF();
+    return QRectF(-200,-200,400,400);
 }
 
 void MissileReticle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -27,10 +27,34 @@ void MissileReticle::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    painter->setPen(QPen(Qt::green));
+    auto boundRect = boundingRect();
+    auto w = boundRect.width();
+    auto h = boundRect.height();
+
+    painter->setPen(QPen(Qt::green,2));
     painter->setFont(QFont("Microsoft Yahei", 16));
 
-    QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    painter->save();
+    painter->rotate(-55);
+    painter->setBrush(Qt::green);
+    QPointF triangle[3] = {               //   0-360
+        QPointF(-m_lineWidth / 4, -h/2 - m_lineWidth / 2),
+        QPointF(m_lineWidth / 4, -h/2 - m_lineWidth / 2),
+        QPointF(0, -h/2)
+    };
+    painter->drawPolygon(triangle, 3);
+
+    painter->setPen(QPen(Qt::green,4));
+    painter->rotate(-20);
+    painter->drawLine(0,-h/2,0,-h/2+m_lineWidth);
+
+    painter->restore();
+
+    painter->drawEllipse(QRectF(-w/2,-h/2,w,h));
+    painter->drawLine(0,-h/2 - 10,0,-h/2 + 10);
+    painter->drawLine(-w/2 -10,0,-w/2,0);
+    painter->drawLine(0,h/2,0,h/2 + 10);
+    painter->drawLine(w/2,0,w/2+10,0);
+
+
 }

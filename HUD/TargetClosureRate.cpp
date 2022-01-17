@@ -9,7 +9,7 @@ TargetClosureRate::TargetClosureRate()
 
 }
 
-void TargetClosureRate::setValue(QString value)
+void TargetClosureRate::setValue(double value)
 {
     if(m_value == value)
         return;
@@ -27,10 +27,17 @@ void TargetClosureRate::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    painter->setPen(QPen(Qt::green));
+    painter->setPen(QPen(Qt::green,2));
     painter->setFont(QFont("Microsoft Yahei", 16));
 
     QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    auto textBound = metrics.boundingRect(QString::number(m_value));
+    painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, QString::number(m_value));
+
+    painter->drawLine(textBound.width() + 10,textBound.height()/4,textBound.width() + 20,textBound.height()/2);
+    painter->drawLine(textBound.width() + 10,textBound.height()*3/4,textBound.width() + 20,textBound.height()/2);
 }
+
+
+
+

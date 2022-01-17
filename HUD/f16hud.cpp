@@ -327,6 +327,66 @@ void F16HUD::initScene()
 
     activeItem(m_distancetosteerpoint);
     m_distancetosteerpoint.setPos(480,400);
-    //m_distancetosteerpoint.setValue(u8"018");
-    //m_distancetosteerpoint.setDisToValue(u8"03");
+    m_distancetosteerpoint.setValue(u8"018");
+    m_distancetosteerpoint.setDisToValue(u8"03");
+
+
+
+
+
+    //中
+//    activeItem(m_guncross);
+//    m_guncross.setPos(0,-400);
+
+//    activeItem(m_missilereticle);
+//    m_missilereticle.setPos(0,-150);
+
+
+//    activeItem(m_leftlabelbeacon);
+//    m_leftlabelbeacon.setPos(-600,-80);
+//    m_leftlabelbeacon.setDirection(4);
+//    m_leftlabelbeacon.setValue(u8"480");
+
+//    activeItem(m_rightlabelbeacon);
+//    m_rightlabelbeacon.setPos(480,-80);
+//    m_rightlabelbeacon.setDirection(3);
+//    m_rightlabelbeacon.setValue(u8"12,500");
+
+//    activeItem(m_targetrange);
+//    m_targetrange.setPos(0,0);
+
+//    activeItem(m_flightpathmarker);
+//    m_flightpathmarker.setPos(0,100);
+//    //左
+
+//    activeItem(m_aim9missilediamond);
+//    m_aim9missilediamond.setPos(-350,-150);
+
+
+//    activeItem(m_tdbox);
+//    m_tdbox.setPos(0,0);
+
+//    //左下
+
+//    activeItem(m_aamissiletype);
+//    m_aamissiletype.setPos(-450,150);
+
+//    //右
+
+//    activeItem(m_mlerange);
+//    m_mlerange.setPos(450,-350);
+
+
+//    activeItem(m_missilelaunchenvelope);
+//    m_missilelaunchenvelope.setPos(460,-50);
+
+//    activeItem(m_targetclosurerate);
+//    m_targetclosurerate.setPos(380,0);
+//    //右下
+
+//    activeItem(m_prelaunchaim9timeofflight);
+//    m_prelaunchaim9timeofflight.setPos(450,150);
+
+//    activeItem(m_targetslantrange);
+//    m_targetslantrange.setPos(400,250);
 }

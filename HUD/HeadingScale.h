@@ -27,7 +27,7 @@ public:
 private:
     float m_range = 20;
     float m_value = 70;
-    const float m_pixPerDegree = 8;
+    const float m_pixPerDegree = 20;
     const float m_lineHeight = 20;
     const float m_textHeight = 40;
 };

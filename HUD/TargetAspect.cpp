@@ -27,10 +27,19 @@ void TargetAspect::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
-    painter->setPen(QPen(Qt::green));
+    painter->setPen(QPen(Qt::green,2));
+    painter->setBrush(Qt::green);
     painter->setFont(QFont("Microsoft Yahei", 16));
 
-    QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    //painter->drawText(QRectF(0, 0, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+//    QFontMetricsF metrics(painter->font());
+//    auto textBound = metrics.boundingRect(m_value);
+
+    const float xDelta = m_lineLen / 4;
+    const float yLen = m_lineLen / 2;
+    QPointF triangle[3] = {
+        QPointF(0, m_radius),
+        QPointF(-xDelta, m_radius+yLen),
+        QPointF(xDelta, m_radius+yLen)
+    };
+    painter->drawPolygon(triangle, 3);
 }
