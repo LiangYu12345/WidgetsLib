@@ -41,12 +41,14 @@ void DragButton::setDropAction(Qt::DropActions supportedActions)
 
 void DragButton::mousePressEvent(QMouseEvent *event)
 {
+    QPushButton::mousePressEvent(event);
     if (event->button() == Qt::LeftButton)
         m_dragStartPosition = event->pos();
 }
 
 void DragButton::mouseMoveEvent(QMouseEvent *event)
 {
+    QPushButton::mouseMoveEvent(event);
     if (!(event->buttons() & Qt::LeftButton))
         return;
     if((event->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance())
@@ -69,7 +71,6 @@ void DragButton::mouseMoveEvent(QMouseEvent *event)
 void DragButton::copyMimeData(const QMimeData &src, QMimeData &dst)
 {
     dst.clear();
-
     const auto formats = src.formats();
     for(const QString &format : formats) {
         // Retrieving data
