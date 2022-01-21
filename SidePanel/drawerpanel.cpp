@@ -56,6 +56,8 @@ void DrawerPanel::setContent(QWidget *widget)
 
 void DrawerPanel::open()
 {
+    if(m_isOpened)
+        return;
     m_isOpened = true;
 
     QPoint startPos = computePos(false, m_align);
@@ -68,6 +70,8 @@ void DrawerPanel::open()
 
 void DrawerPanel::close()
 {
+    if(!m_isOpened)
+        return;
     m_isOpened = false;
 
     QPoint startPos = computePos(true, m_align);
