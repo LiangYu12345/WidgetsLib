@@ -24,6 +24,7 @@ public:
     void setIcon(const QIcon &icon);
     /// 设置内容控件
     void setContent(QWidget *widget);
+    QWidget *content() const;
     /// 展开
     void open();
     /// 合上

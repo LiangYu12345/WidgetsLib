@@ -54,6 +54,11 @@ void DrawerPanel::setContent(QWidget *widget)
     updateLayout();
 }
 
+QWidget *DrawerPanel::content() const
+{
+    return m_content;
+}
+
 void DrawerPanel::open()
 {
     if(m_isOpened)
