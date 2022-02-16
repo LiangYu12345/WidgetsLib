@@ -18,6 +18,12 @@ add_library(${PROJECT_NAME} SHARED
   SidePanel/drawerpanel.cpp
   Table/tablewidget.h
   Table/tablewidget.cpp
+  Table/polygontablewidget.h
+  Table/polygontablewidget.cpp
+  Table/execltablewidget.h
+  Table/execltablewidget.cpp
+  Table/waypointtablewidget.h
+  Table/waypointtablewidget.cpp
   HUD/huditem.h
   HUD/huditem.cpp
   HUD/f16hud.h

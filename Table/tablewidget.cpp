@@ -1,26 +1,26 @@
 ﻿#include "tablewidget.h"
 #include <QDebug>
 #include <QApplication>
-PointsWidget::PointsWidget(int row, int column, QWidget *parent)
+TableWidget::TableWidget(int row, int column, QWidget *parent)
     :QWidget (parent)
 {
     m_tablewidget = new QTableWidget(row,column,this);
     Init();
 }
 
-PointsWidget::PointsWidget(QWidget *parent)
+TableWidget::TableWidget(QWidget *parent)
     : QWidget(parent)
 {
     m_tablewidget = new QTableWidget(5,4,this);
     Init();
 }
 
-PointsWidget::~PointsWidget()
+TableWidget::~TableWidget()
 {
     delete m_tablewidget;
 }
 
-void PointsWidget::appendHeader(QString name)
+void TableWidget::appendHeader(QString name)
 {
     auto number = m_tablewidget->horizontalHeader()->count();
     m_tablewidget->insertColumn(number);
@@ -36,36 +36,87 @@ void PointsWidget::appendHeader(QString name)
     }
 }
 
-void PointsWidget::insertHeader(int number, WidgetType type, QString name)
+void TableWidget::insertHeader(int number, WidgetType type, QString name)
 {
     m_tablewidget->insertColumn(number);
     QTableWidgetItem *item = new QTableWidgetItem(name,QTableWidgetItem::Type);
     m_tablewidget->setHorizontalHeaderItem(number,item);
+    switch (type) {
+        case Text:
+        for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
+        {
+            QTableWidgetItem * item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignCenter);
+            m_tablewidget->setItem(nIndex,number,item);
+        }
+        break;
+        case Button:
+        for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
+        {
+            QTableWidgetItem * item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignCenter);
+            m_tablewidget->setItem(nIndex,number,item);
 
-    for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
-    {
-        QTableWidgetItem * item = new QTableWidgetItem;
-        item->setTextAlignment(Qt::AlignCenter);
-        m_tablewidget->setItem(nIndex,number,item);
+            m_tablewidget->setCellWidget(nIndex,number,CreateBtnWdiget(u8"删除"));
+        }
+        break;
+        case LineEdit:
+        for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
+        {
+            QTableWidgetItem * item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignCenter);
+            m_tablewidget->setItem(nIndex,number,item);
+
+            m_tablewidget->setCellWidget(0,3,CreateLineEditWdiget());
+        }
+        break;
+        case Icon:
+        for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
+        {
+            QTableWidgetItem * item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignCenter);
+            m_tablewidget->setItem(nIndex,number,item);
+
+            m_tablewidget->setCellWidget(0,3,CreateIconWdiget(QApplication::style()->standardIcon(QStyle::SP_ComputerIcon).pixmap(40,40)));
+        }
+        break;
+        default:
+        break;
     }
+
 }
 
-void PointsWidget::removeHeader(int number)
+void TableWidget::removeHeader(int number)
 {
     m_tablewidget->removeColumn(number);   //包含释放其内存
 }
 
-QList<QTableWidgetItem *> PointsWidget::m_points() const
+void TableWidget::edihorizontalHeaderName(int column,QString &name)
 {
-    return QList<QTableWidgetItem *>();
+    m_tablewidget->horizontalHeaderItem(column)->setText(name);
 }
 
-int PointsWidget::getRowCount() const
+
+QList<QTableWidgetItem *> TableWidget::m_points() const
+{
+    QList<QTableWidgetItem *> points;
+
+    for(int Index = 0; Index < m_tablewidget->rowCount(); Index ++)
+    {
+        for(int nIndex = 0; nIndex < m_tablewidget->columnCount(); nIndex ++)
+        {
+            points.append(m_tablewidget->item(Index,nIndex));
+        }
+    }
+    return points;
+}
+
+int TableWidget::getRowCount() const
 {
     return m_tablewidget->rowCount();
 }
 
-void PointsWidget::editPoint(int row, int column, QString value)
+void TableWidget::editPoint(int row, int column, QString value)
 {
     if(m_tablewidget->item(row,column) == nullptr)
     {
@@ -75,7 +126,7 @@ void PointsWidget::editPoint(int row, int column, QString value)
     m_tablewidget->item(row,column)->setText(value);
 }
 
-void PointsWidget::appendPoint()
+void TableWidget::appendPoint()
 {
     auto row = m_tablewidget->rowCount();
     m_tablewidget->insertRow(row);
@@ -88,7 +139,7 @@ void PointsWidget::appendPoint()
     }
 }
 
-void PointsWidget::insertPoint(int num)
+void TableWidget::insertPoint(int num)
 {
     m_tablewidget->insertRow(num);
 
@@ -100,17 +151,27 @@ void PointsWidget::insertPoint(int num)
     }
 }
 
-void PointsWidget::removePoint(int num)
+void TableWidget::removePoint(int num)
 {
     m_tablewidget->removeRow(num);
 }
 
-void PointsWidget::clearAll()
+void TableWidget::editverticalHeaderName(int row, QString &name)
+{
+    m_tablewidget->verticalHeaderItem(row)->setText(name);
+}
+
+void TableWidget::clearAll()
 {
     m_tablewidget->clearContents();
 }
 
-void PointsWidget::slotBtnClicked()
+QSize TableWidget::sizeHint() const
+{
+    return QSize(200, 200);
+}
+
+void TableWidget::slotBtnClicked()
 {
     auto btn = reinterpret_cast<QPushButton *>(sender());
     auto widget =btn->parent();
@@ -123,12 +184,12 @@ void PointsWidget::slotBtnClicked()
 
 }
 
-void PointsWidget::slotLineEditTextChanged(QString text)
+void TableWidget::slotLineEditTextChanged(QString text)
 {
     qDebug()<<text;
 }
 
-void PointsWidget::slotChooseCurrentPointChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
+void TableWidget::slotChooseCurrentPointChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
 {
     Q_UNUSED(previous);
     if(m_currentitem == current)
@@ -136,24 +197,20 @@ void PointsWidget::slotChooseCurrentPointChanged(QTableWidgetItem *current, QTab
     m_currentitem = current;
 }
 
-void PointsWidget::resizeEvent(QResizeEvent *event)
+void TableWidget::slotCellWidgetDoubleClicked(int row, int column)
 {
-    Q_UNUSED(event);
-    if(this->size().width() > 500 || this->size().height() > 400)
-        m_tablewidget->resize(this->size());
+    ;
 }
 
-void PointsWidget::Init()
+void TableWidget::resizeEvent(QResizeEvent *event)
 {
-    //初始化 表格 ： 编号 经度  纬度  高度
-    m_tablewidget->resize(500,400);
+    Q_UNUSED(event);
+    m_tablewidget->resize(this->size());
+}
 
-    m_hlist << u8"编号" << u8"经度(°)" << u8"纬度(°)" << u8"高度(m)";
-    m_vlist << u8"1" << u8"2" << u8"3" << u8"4" << u8"5";
-    m_tablewidget->setHorizontalHeaderLabels(m_hlist);
-    m_tablewidget->setVerticalHeaderLabels(m_vlist);
-
-    connect(m_tablewidget,&QTableWidget::currentItemChanged,this,&PointsWidget::slotChooseCurrentPointChanged);
+void TableWidget::Init()
+{
+    connect(m_tablewidget,&QTableWidget::currentItemChanged,this,&TableWidget::slotChooseCurrentPointChanged);
 
     m_tablewidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
     m_tablewidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
@@ -164,57 +221,15 @@ void PointsWidget::Init()
     for(int Index = 0; Index < m_tablewidget->columnCount(); Index ++)
     {
         for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
-            m_tablewidget->setItem(nIndex,Index,new QTableWidgetItem(QString::number(nIndex+1)));
+            m_tablewidget->setItem(nIndex,Index,new QTableWidgetItem());
     }
 
-    QString str(u8"删除");
-    m_tablewidget->setCellWidget(0,3,CreateBtnWdiget(str));
-    m_tablewidget->setCellWidget(1,3,CreateLineEditWdiget());
-    m_tablewidget->setCellWidget(2,3,CreateIconWdiget(QApplication::style()->standardIcon(QStyle::SP_ComputerIcon).pixmap(40,40)));
-
-    //菜单栏
-    {
-    m_tablewidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    m_menu = new QMenu(m_tablewidget);
-
-    QMenu * insertmenu = new QMenu(u8"插入", this);
-
-//    action = new QAction(u8"单元格右移", this);
-//    connect(action, &QAction::triggered, this, [=](){insertTableCell(1);});
-//    insertmenu->addAction(action);
-//    action = new QAction(u8"单元格下移", this);
-//    connect(action, &QAction::triggered, this, [=](){insertTableCell(2);});
-//    insertmenu->addAction(action);
-    action = new QAction(u8"整行", this);
-    connect(action, &QAction::triggered, this, [=](){insertTableCell(3);});
-    insertmenu->addAction(action);
-    action = new QAction(u8"整列", this);
-    connect(action, &QAction::triggered, this, [=](){insertTableCell(4);});
-    insertmenu->addAction(action);
-    m_menu->addMenu(insertmenu);
-
-    QMenu * removemenu = new QMenu(u8"删除",this);
-//    action = new QAction(u8"单元格左移", this);
-//    connect(action, &QAction::triggered, this, [=](){removeTableCell(1);});
-//    removemenu->addAction(action);
-//    action = new QAction(u8"单元格上移", this);
-//    connect(action, &QAction::triggered, this, [=](){removeTableCell(2);});
-//    removemenu->addAction(action);
-    action = new QAction(u8"整行", this);
-    connect(action, &QAction::triggered, this, [=](){removeTableCell(3);});
-    removemenu->addAction(action);
-    action = new QAction(u8"整列", this);
-    connect(action, &QAction::triggered, this, [=](){removeTableCell(4);});
-    removemenu->addAction(action);
-    m_menu->addMenu(removemenu);
-
-    connect(m_tablewidget,&QWidget::customContextMenuRequested,this,[=](){m_menu->exec(QCursor::pos());});
-    }
+    connect(m_tablewidget,&QTableWidget::cellDoubleClicked,this,&TableWidget::slotCellWidgetDoubleClicked);
 
     Refresh();
 }
 
-void PointsWidget::Refresh()
+void TableWidget::Refresh()
 {
 
     auto column = m_tablewidget->columnCount();
@@ -229,7 +244,7 @@ void PointsWidget::Refresh()
     }
 }
 
-QWidget *PointsWidget::CreateBtnWdiget(const QString &btnname)
+QWidget *TableWidget::CreateBtnWdiget(const QString &btnname)
 {
     QWidget * item = new QWidget;
 
@@ -240,11 +255,11 @@ QWidget *PointsWidget::CreateBtnWdiget(const QString &btnname)
     layout->addWidget(btn);
 
     item->setLayout(layout);
-    connect(btn,&QPushButton::clicked,this,&PointsWidget::slotBtnClicked);
+    connect(btn,&QPushButton::clicked,this,&TableWidget::slotBtnClicked);
     return item;
 }
 
-QWidget *PointsWidget::CreateLineEditWdiget()
+QWidget *TableWidget::CreateLineEditWdiget()
 {
     QWidget * item = new QWidget;
 
@@ -254,11 +269,11 @@ QWidget *PointsWidget::CreateLineEditWdiget()
     layout->addWidget(lineEdit);
 
     item->setLayout(layout);
-    connect(lineEdit,&QLineEdit::textChanged,this,&PointsWidget::slotLineEditTextChanged);
+    connect(lineEdit,&QLineEdit::textChanged,this,&TableWidget::slotLineEditTextChanged);
     return item;
 }
 
-QWidget *PointsWidget::CreateIconWdiget(const QPixmap &pixmap)
+QWidget *TableWidget::CreateIconWdiget(const QPixmap &pixmap)
 {
     QWidget * item = new QWidget;
 
@@ -270,40 +285,4 @@ QWidget *PointsWidget::CreateIconWdiget(const QPixmap &pixmap)
     item->setLayout(layout);
 
     return item;
-}
-
-void PointsWidget::insertTableCell(int type)
-{
-    switch (type) {
-    case 1:
-        break;
-    case 2:
-        break;
-    case 3:
-        insertPoint(m_tablewidget->row(m_currentitem));
-        break;
-    case 4:
-        insertHeader(m_tablewidget->column(m_currentitem),WidgetType::Text,"");
-        break;
-    default:
-        ;
-    }
-}
-
-void PointsWidget::removeTableCell(int type)
-{
-    switch (type) {
-    case 1:
-        break;
-    case 2:
-        break;
-    case 3:
-        removePoint(m_tablewidget->row(m_currentitem));
-        break;
-    case 4:
-        removeHeader(m_tablewidget->column(m_currentitem));
-        break;
-    default:
-        ;
-    }
 }
