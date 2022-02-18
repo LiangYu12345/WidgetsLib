@@ -14,6 +14,8 @@ add_library(${PROJECT_NAME} SHARED
   widgetslib_global.h
   Button/dragbutton.h
   Button/dragbutton.cpp
+  Button/switchbutton.h
+  Button/switchbutton.cpp
   SidePanel/drawerpanel.h
   SidePanel/drawerpanel.cpp
   Table/tablewidget.h

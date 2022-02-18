@@ -116,6 +116,11 @@ int TableWidget::getRowCount() const
     return m_tablewidget->rowCount();
 }
 
+int TableWidget::getColumnCount() const
+{
+    return m_tablewidget->columnCount();
+}
+
 void TableWidget::editPoint(int row, int column, QString value)
 {
     if(m_tablewidget->item(row,column) == nullptr)

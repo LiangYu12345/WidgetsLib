@@ -37,6 +37,7 @@ public:
     QList<QTableWidgetItem *> m_points() const;
     //获取表格总行数
     int getRowCount() const;
+    int getColumnCount() const;
     //编辑表格中一个Point的单个数据
     void editPoint(int row,int column,QString value);    // 差一个编辑表格中一个点的单个数据的数据类型：Icon，Btn
     //添加一行  默认为空
@@ -58,11 +59,11 @@ public slots:
     void slotCellWidgetDoubleClicked(int row,int column);
 signals:
     // 添加信号
-    void signalAdd();
+    void signalAdd(int row);
     //删除信号
-    void signalRemoved();
+    void signalRemoved(int row);
     //编辑信号
-    void signalEdit();
+    void signalEdit(int row,int column);
     //切换信号
     void signalSwitch();
     //当前点添加及插入信号
