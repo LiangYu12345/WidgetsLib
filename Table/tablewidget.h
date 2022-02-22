@@ -32,7 +32,7 @@ public:
     //移除一列表头
     void removeHeader(int number);
     //修改表头名称
-    void edihorizontalHeaderName(int column,QString &name);
+    void editHorizontalHeaderName(int column,QString &name);
     //获取当前行的数据
     QList<QTableWidgetItem *> m_points() const;
     //获取表格总行数
@@ -47,7 +47,7 @@ public:
     //移除某行
     void removePoint(int num);
     //修改某行名称
-    void editverticalHeaderName(int row,QString &name);
+    void editVerticalHeaderName(int row,QString &name);
     //清除所有数据
     void clearAll();
 
@@ -63,7 +63,7 @@ signals:
     //删除信号
     void signalRemoved(int row);
     //编辑信号
-    void signalEdit(int row,int column);
+    void signalEdit(int row,int column,QString str);
     //切换信号
     void signalSwitch();
     //当前点添加及插入信号

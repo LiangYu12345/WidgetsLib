@@ -11,7 +11,7 @@ TableWidget::TableWidget(int row, int column, QWidget *parent)
 TableWidget::TableWidget(QWidget *parent)
     : QWidget(parent)
 {
-    m_tablewidget = new QTableWidget(5,4,this);
+    m_tablewidget = new QTableWidget(6,4,this);
     Init();
 }
 
@@ -91,7 +91,7 @@ void TableWidget::removeHeader(int number)
     m_tablewidget->removeColumn(number);   //包含释放其内存
 }
 
-void TableWidget::edihorizontalHeaderName(int column,QString &name)
+void TableWidget::editHorizontalHeaderName(int column,QString &name)
 {
     m_tablewidget->horizontalHeaderItem(column)->setText(name);
 }
@@ -129,6 +129,8 @@ void TableWidget::editPoint(int row, int column, QString value)
         return;
     }
     m_tablewidget->item(row,column)->setText(value);
+
+    //emit signalEdit(row,column,value);
 }
 
 void TableWidget::appendPoint()
@@ -142,6 +144,7 @@ void TableWidget::appendPoint()
         item->setTextAlignment(Qt::AlignCenter);
         m_tablewidget->setItem(row,nIndex,item);
     }
+    emit signalAdd(row);
 }
 
 void TableWidget::insertPoint(int num)
@@ -154,14 +157,16 @@ void TableWidget::insertPoint(int num)
         item->setTextAlignment(Qt::AlignCenter);
         m_tablewidget->setItem(num,nIndex,item);
     }
+    emit signalAdd(num);
 }
 
 void TableWidget::removePoint(int num)
 {
     m_tablewidget->removeRow(num);
+    emit signalRemoved(num);
 }
 
-void TableWidget::editverticalHeaderName(int row, QString &name)
+void TableWidget::editVerticalHeaderName(int row, QString &name)
 {
     m_tablewidget->verticalHeaderItem(row)->setText(name);
 }
@@ -173,7 +178,7 @@ void TableWidget::clearAll()
 
 QSize TableWidget::sizeHint() const
 {
-    return QSize(200, 200);
+    return QSize(m_hlist.size() * 100, m_vlist.size() * 50);
 }
 
 void TableWidget::slotBtnClicked()
