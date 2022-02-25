@@ -26,6 +26,8 @@ add_library(${PROJECT_NAME} SHARED
   Table/execltablewidget.cpp
   Table/waypointtablewidget.h
   Table/waypointtablewidget.cpp
+  PFD/rollpitch.h
+  PFD/rollpitch.cpp
   HUD/huditem.h
   HUD/huditem.cpp
   HUD/f16hud.h
