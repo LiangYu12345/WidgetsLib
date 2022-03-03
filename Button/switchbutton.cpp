@@ -26,6 +26,11 @@ SwitchButton::SwitchButton(const QString &opentext, const QString &closetext, QW
     connect(&m_timer,&QTimer::timeout,this,&SwitchButton::onTimeout);
 }
 
+bool SwitchButton::isTooggle()
+{
+    return m_checked;
+}
+
 void SwitchButton::setToggle(bool checked)
 {
     m_checked = checked;

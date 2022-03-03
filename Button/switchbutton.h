@@ -14,6 +14,7 @@ public:
     explicit SwitchButton(QWidget * parent = nullptr);
     explicit SwitchButton(const QString &opentext,const QString &closetext, QWidget *parent = nullptr);
 
+    bool isTooggle();
     void setToggle(bool checked);
 
     void setBackgroundColor(QColor color);

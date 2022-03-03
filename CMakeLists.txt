@@ -28,6 +28,20 @@ add_library(${PROJECT_NAME} SHARED
   Table/waypointtablewidget.cpp
   PFD/rollpitch.h
   PFD/rollpitch.cpp
+  MissileConfigure/missileconfigure.h
+  MissileConfigure/missileconfigure.cpp
+  MissileConfigure/j20missileconfigure.h
+  MissileConfigure/j20missileconfigure.cpp
+  MissileConfigure/f35missileconfigure.h
+  MissileConfigure/f35missileconfigure.cpp
+  MissileConfigure/missile.h
+  MissileConfigure/missile.cpp
+  MissileConfigure/infraredmissile.h
+  MissileConfigure/infraredmissile.cpp
+  MissileConfigure/radarmissile.h
+  MissileConfigure/radarmissile.cpp
+  MissileConfigure/emptymissile.h
+  MissileConfigure/emptymissile.cpp
   HUD/huditem.h
   HUD/huditem.cpp
   HUD/f16hud.h
