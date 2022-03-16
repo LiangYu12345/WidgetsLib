@@ -42,6 +42,18 @@ add_library(${PROJECT_NAME} SHARED
   MissileConfigure/radarmissile.cpp
   MissileConfigure/emptymissile.h
   MissileConfigure/emptymissile.cpp
+  MultileListView/multilelistview.h
+  MultileListView/multilelistview.cpp
+  MissileConfigure/j20weaponconfigure.h
+  MissileConfigure/j20weaponconfigure.cpp
+  MissileConfigure/f35weaponconfigure.h
+  MissileConfigure/f35weaponconfigure.cpp
+  MissileConfigure/xxweapon.h
+  MissileConfigure/xxweapon.cpp
+  MissileConfigure/j20frontview.h
+  MissileConfigure/j20frontview.cpp
+  MissileConfigure/f35frontview.h
+  MissileConfigure/f35frontview.cpp
   HUD/huditem.h
   HUD/huditem.cpp
   HUD/f16hud.h

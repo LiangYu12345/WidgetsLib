@@ -86,9 +86,9 @@ void F35MissileConfigure::updateLayout()
         Missile *mis = iter.value();
 
         if(mount >= m_missileMap.size() / 2)
-            mis->move(30 + mount * 25, 100);
+            mis->move(30 + mount * 25, 85);
         else
-            mis->move(20 + mount * 25, 100);;
+            mis->move(20 + mount * 25, 85);;
         mis->resize(24, 135);
     }
 }

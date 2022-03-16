@@ -8,6 +8,7 @@
 #include "infraredmissile.h"
 #include "radarmissile.h"
 #include "emptymissile.h"
+#include "xxweapon.h"
 
 class WIDGETSLIB_EXPORT MissileConfigure : public QWidget
 {
@@ -40,6 +41,7 @@ signals:
 
 protected:
     QMap<int, Missile*> m_missileMap;
+    QMap<int, XXWeapon *> m_weaponMap;
     QColor              m_painterColor;
 };
 
