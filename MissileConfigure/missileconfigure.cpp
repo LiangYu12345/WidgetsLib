@@ -20,14 +20,14 @@ void MissileConfigure::setMissile(int mount, Missile *mis)
         connect(mis, &Missile::doubleClicked, this, &MissileConfigure::onMissileDoubleClicked);
         mis->setParent(this);
         m_missileMap.insert(mount, mis);
-        emit changed(mount, mis);
+        emit changed(mount);
     }
     else {
         connect(mis, &Missile::clicked, this, &MissileConfigure::onMissileClicked);
         connect(mis, &Missile::doubleClicked, this, &MissileConfigure::onMissileDoubleClicked);
         mis->setParent(this);
         m_missileMap.insert(mount, mis);
-        emit added(mount, mis);
+        emit added(mount);
     }
     mis->show();
 }
@@ -51,7 +51,7 @@ void MissileConfigure::onMissileClicked(bool check)
 {
     auto mis = qobject_cast<Missile*>(sender());
     int mount = mountIndex(mis);
-    emit checked(mount, mis, check);
+    emit checked(mount, check);
 }
 
 void MissileConfigure::onMissileDoubleClicked()

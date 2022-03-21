@@ -32,12 +32,12 @@ private:
     int mountIndex(Missile* mis);
 
 signals:
-    void added(int mount, Missile *mis);
+    void added(int mount);
     void removed(int mount);
     void cleared();
-    void changed(int mount, Missile *mis);
-    void checked(int mount, Missile *mis, bool &check);
-    void toggled(int mount, Missile *mis);
+    void changed(int mount);
+    void checked(int mount, bool &check);
+    void toggled(int mount);
 
 protected:
     QMap<int, Missile*> m_missileMap;
