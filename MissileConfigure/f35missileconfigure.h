@@ -12,13 +12,12 @@ class WIDGETSLIB_EXPORT F35MissileConfigure : public MissileConfigure
     Q_OBJECT
 public:
     explicit F35MissileConfigure(QWidget * parent = nullptr);
+    void updateLayout();
 protected:
     virtual void paintEvent(QPaintEvent * e) override;
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual QSize sizeHint() const override;
     virtual void replaceMissie(int mount, Missile *curMissile) override;
-private:
-    void updateLayout();
 private:
     QPainterPath m_path;
 };

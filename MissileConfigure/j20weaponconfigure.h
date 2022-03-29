@@ -14,6 +14,10 @@ protected:
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual QSize sizeHint() const override;
     virtual void replaceMissie(int mount, Missile *curMissile) override;
+    virtual void mouseDoubleClickEvent(QMouseEvent * e) override;
+private:
+    bool isPointInMatrix(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF p);
+    double getCross(QPointF p1, QPointF p2, QPointF p);
 private:
     QPainterPath m_path;
 };

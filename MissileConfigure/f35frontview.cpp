@@ -14,9 +14,9 @@ F35FrontView::F35FrontView(QWidget *parent)
     m_path.lineTo(-80,45);
     m_path.cubicTo(QPointF(),QPointF(),QPointF(-73,52));
 
-    m_path.lineTo(3,3);
-    m_path.cubicTo(QPointF(),QPointF(),QPointF());
-    m_path.lineTo(4,4);
+//    m_path.lineTo(3,3);
+//    m_path.cubicTo(QPointF(),QPointF(),QPointF());
+//    m_path.lineTo(4,4);
 }
 
 void F35FrontView::paintEvent(QPaintEvent *e)

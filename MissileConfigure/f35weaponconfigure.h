@@ -2,7 +2,6 @@
 #define F35WEAPONCONFIGURE_H
 
 #include "widgetslib_global.h"
-#include <QWidget>
 #include "missileconfigure.h"
 
 class WIDGETSLIB_EXPORT F35WeaponConfigure : public MissileConfigure
@@ -12,12 +11,13 @@ public:
     explicit F35WeaponConfigure(QWidget *parent = nullptr);
 protected:
     virtual void paintEvent(QPaintEvent *e) override;
-    virtual void mouseDoubleClickEvent(QMouseEvent *e) override;
     virtual void resizeEvent(QResizeEvent *e) override;
     virtual QSize sizeHint() const override;
     virtual void replaceMissie(int mount, Missile *curMissile) override;
+    virtual void mouseDoubleClickEvent(QMouseEvent * e) override;
 private:
-    void updateLayout();
+    bool isPointInMatrix(QPointF p1, QPointF p2, QPointF p3, QPointF p4, QPointF p);
+    double getCross(QPointF p1, QPointF p2, QPointF p);
 private:
     QPainterPath m_path;
 };

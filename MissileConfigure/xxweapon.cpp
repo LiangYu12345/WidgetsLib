@@ -14,11 +14,11 @@ void XXWeapon::paintEvent(QPaintEvent *e)
     painter.setWindow(0,0,40,40);
 
     if(m_checked){
-        QPen pen(Qt::yellow,2,Qt::SolidLine);
+        QPen pen(m_painterColor,2,Qt::SolidLine);
         painter.setPen(pen);
     }
     else{
-        QPen pen(Qt::white,2,Qt::DotLine);
+        QPen pen(m_painterColor,2,Qt::DotLine);
         painter.setPen(pen);
     }
 
@@ -26,13 +26,7 @@ void XXWeapon::paintEvent(QPaintEvent *e)
     painter.drawPath(m_path);
 }
 
-void XXWeapon::mousePressEvent(QMouseEvent *e)
+QSize XXWeapon::sizeHint() const
 {
-    m_checked =! m_checked;
-    update();
-}
-
-void XXWeapon::mouseDoubleClickEvent(QMouseEvent *e)
-{
-    e->ignore();
+    return QSize(40,40);
 }

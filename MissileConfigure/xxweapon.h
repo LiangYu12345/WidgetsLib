@@ -13,11 +13,9 @@ public:
     explicit XXWeapon(QWidget * parent = nullptr);
 protected:
     void paintEvent(QPaintEvent * e) override;
-    void mousePressEvent(QMouseEvent *e) override;
-    void mouseDoubleClickEvent(QMouseEvent *e) override;
+    virtual QSize sizeHint() const override;
 private:
     QPainterPath m_path;
-    bool m_checked = false;
 };
 
 #endif // XXWEAPON_H
