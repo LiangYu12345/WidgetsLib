@@ -2,7 +2,7 @@
 #include <QPainter>
 
 F35WeaponConfigure::F35WeaponConfigure(QWidget * parent)
-    :MissileConfigure(parent)
+    :WeaponConfigure(parent)
 {
     m_path.moveTo(0,0);
     m_path.cubicTo(QPointF(-0,0),QPointF(-0,-5),QPointF(-10,20));
@@ -52,11 +52,6 @@ void F35WeaponConfigure::resizeEvent(QResizeEvent *e)
 QSize F35WeaponConfigure::sizeHint() const
 {
     return QSize(360,580);
-}
-
-void F35WeaponConfigure::replaceMissie(int mount, Missile *curMissile)
-{
-    return;
 }
 
 void F35WeaponConfigure::mouseDoubleClickEvent(QMouseEvent *e)

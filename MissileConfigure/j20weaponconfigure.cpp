@@ -3,7 +3,7 @@
 #include <QDebug>
 
 J20WeaponConfigure::J20WeaponConfigure(QWidget *parent)
-    :MissileConfigure(parent)
+    :WeaponConfigure(parent)
 {
     m_path.moveTo(0,0);
     m_path.cubicTo(QPointF(-0,0),QPointF(-0,-10),QPointF(-5,10));
@@ -59,11 +59,6 @@ void J20WeaponConfigure::resizeEvent(QResizeEvent *event)
 QSize J20WeaponConfigure::sizeHint() const
 {
     return QSize(360,580);
-}
-
-void J20WeaponConfigure::replaceMissie(int mount, Missile *curMissile)
-{
-    return;
 }
 
 void J20WeaponConfigure::mouseDoubleClickEvent(QMouseEvent *e)

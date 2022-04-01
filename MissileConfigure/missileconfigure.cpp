@@ -102,6 +102,37 @@ XXWeapon *MissileConfigure::weapon(int mount)
     return nullptr;
 }
 
+MissileConfigure::WeaponSpace *MissileConfigure::weaponMount(int mount)
+{
+    if(m_weaponMap.contains(mount)){
+        return &m_weaponMap.find(mount).value();
+    }
+    return nullptr;
+}
+
+void MissileConfigure::setWeaponPosition(int mount, QPointF pos)
+{
+    if(m_weaponMap.contains(mount)){
+        auto &item = m_weaponMap.find(mount).value();
+        item.position = pos;
+
+        int x = pos.x()*25+150;
+        int y = -pos.y()*23+230;
+        item.xx->move(x,y);
+
+        update();
+    }
+}
+
+QPointF MissileConfigure::getWeaponPosition(int mount)
+{
+    auto &item = m_weaponMap.find(mount).value();
+    QPointF pos = item.position;
+    pos.setX((pos.x()- 150)/30);
+    pos.setY((pos.y() - 230)/29);
+    return pos;
+}
+
 void MissileConfigure::mouseDoubleClickEvent(QMouseEvent *e)
 {
     e->accept();

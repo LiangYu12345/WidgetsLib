@@ -3,20 +3,17 @@
 
 #include "widgetslib_global.h"
 #include <QWidget>
-#include "missileconfigure.h"
+#include "weaponconfigure.h"
 
-class WIDGETSLIB_EXPORT J20FrontView : public MissileConfigure
+class WIDGETSLIB_EXPORT J20FrontView : public WeaponConfigure
 {
 public:
     explicit J20FrontView(QWidget *parent = nullptr);
 protected:
     virtual void paintEvent(QPaintEvent *e) override;
-    virtual void mouseDoubleClickEvent(QMouseEvent *e) override;
     virtual void resizeEvent(QResizeEvent *e) override;
     virtual QSize sizeHint() const override;
-    virtual void replaceMissie(int mount, Missile *curMissile) override;
-private:
-    void updateLayout();
+    virtual void mouseDoubleClickEvent(QMouseEvent * e) override;
 private:
     QPainterPath m_path;
 };
