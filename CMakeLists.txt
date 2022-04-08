@@ -44,6 +44,10 @@ add_library(${PROJECT_NAME} SHARED
   MissileConfigure/emptymissile.cpp
   MultileListView/multilelistview.h
   MultileListView/multilelistview.cpp
+  MultileListView/multilelistviewitem.h
+  MultileListView/multilelistviewitem.cpp
+  MultileListView/areainformationdisplay.h
+  MultileListView/areainformationdisplay.cpp
   MissileConfigure/weaponconfigure.h
   MissileConfigure/weaponconfigure.cpp
   MissileConfigure/j20weaponconfigure.h
