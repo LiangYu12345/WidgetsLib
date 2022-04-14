@@ -4,7 +4,8 @@
 #include <QDebug>
 
 MultileListView::MultileListView(QWidget *parent)
-    : QListWidget(parent)
+    : QListWidget(parent),
+      m_isItemHover(false)
 {
     this->setMouseTracking(true);
 
@@ -53,8 +54,35 @@ void MultileListView::mouseMoveEvent(QMouseEvent *e)
 {
     auto item = static_cast<QListWidgetItem *>(itemAt(e->pos()));
 
-    if(item == nullptr)
+    if(item == nullptr && !m_isItemHover)
         return;
-    emit listItemMoved(e->pos());
+    else if(item == nullptr && m_isItemHover){
+        m_isItemHover = false;
+    }
+
+    if(m_previous == nullptr && m_current == nullptr && m_isItemHover == false){
+        m_current = item;
+        emit listItemEntered(item, e->pos());
+    }
+    else if(m_previous == nullptr && m_current != nullptr){
+        m_previous = m_current;
+        m_isItemHover = true;
+        emit listItemMoved(e->pos());
+    }
+    else if(m_previous != nullptr && m_current != nullptr && m_isItemHover == true){
+        emit listItemMoved(e->pos());
+    }
+    else if(m_previous != nullptr && m_current != nullptr && m_isItemHover == false){
+        m_current = nullptr;
+        emit listItemLeaved();
+    }
+    else if(m_previous != nullptr && m_current == nullptr){
+        m_previous =  nullptr;
+    }
     QListWidget::mouseMoveEvent(e);
+}
+
+void MultileListView::leaveEvent(QEvent *e)
+{
+    emit listLeaved();
 }

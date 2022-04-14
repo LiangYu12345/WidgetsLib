@@ -9,7 +9,7 @@ AreaInformationDisplay::AreaInformationDisplay(QWidget *parent)
 //    m_gLayout->setVerticalSpacing(10);
     this->setLayout(m_gLayout);
 
-    this->setStyleSheet("background-color:red");
+    this->setAttribute(Qt::WA_TransparentForMouseEvents,true);
 }
 
 void AreaInformationDisplay::addItem(int Index, const QString &name, const QString &value)

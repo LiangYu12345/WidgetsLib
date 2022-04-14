@@ -24,13 +24,17 @@ public:
     void removeItem(int Index);
 protected:
     virtual void mouseMoveEvent(QMouseEvent * e) override;
+    virtual void leaveEvent(QEvent * e) override;
 signals:
     void listItemEntered(QListWidgetItem *item, QPoint pos);
     void listItemChanged(QListWidgetItem *item);
     void listItemMoved(QPoint pos);
     void listItemLeaved();
+    void listLeaved();
 private:
-    bool isItemHover;
+    bool m_isItemHover;
+    QListWidgetItem * m_previous;
+    QListWidgetItem * m_current;
 };
 
 #endif // MULTILELISTVIEW_H
