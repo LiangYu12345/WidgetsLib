@@ -26,8 +26,8 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent * e) override;
     virtual void leaveEvent(QEvent * e) override;
 signals:
-    void listItemEntered(QListWidgetItem *item, QPoint pos);
-    void listItemChanged(QListWidgetItem *item);
+    void listItemEntered(QListWidgetItem *item);
+    void listItemChanged(QListWidgetItem *pre, QListWidgetItem *cur);
     void listItemMoved(QPoint pos);
     void listItemLeaved();
     void listLeaved();

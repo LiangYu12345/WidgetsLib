@@ -1,14 +1,13 @@
 ﻿#include "areainformationdisplay.h"
 
 AreaInformationDisplay::AreaInformationDisplay(QWidget *parent)
-    : QWidget{parent}
+    : QWidget(parent)
 {
     m_gLayout = new QGridLayout;
 
-//    m_gLayout->setHorizontalSpacing(25);
-//    m_gLayout->setVerticalSpacing(10);
     this->setLayout(m_gLayout);
 
+    this->setAttribute(Qt::WA_TranslucentBackground, true);
     this->setAttribute(Qt::WA_TransparentForMouseEvents,true);
 }
 
