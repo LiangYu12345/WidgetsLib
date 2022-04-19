@@ -28,6 +28,10 @@ void WeaponConfigure::setWeapon(int mount, const WeaponSpace &weapon)
         m_weaponMap.insert(mount, weapon);
         emit addedWeapon(mount);
     }
+
+    // 更新位置
+    setWeaponPosition(mount, weapon.position);
+
     weapon.xx->show();
 }
 
