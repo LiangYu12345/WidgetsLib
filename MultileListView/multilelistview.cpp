@@ -12,7 +12,10 @@ MultileListView::MultileListView(QWidget *parent)
     this->setMouseTracking(true);
 
     this->setViewMode(QListView::IconMode);
-    this->setIconSize(QSize(150,150));
+    this->setWrapping(false);
+    this->setFlow(QListView::LeftToRight);
+    this->setIconSize(QSize(150, 150));
+    //this->resize(QSize(600, 100));
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -53,7 +56,7 @@ void MultileListView::appendItem(const QString &name, const QPixmap &pixmap)
 
 void MultileListView::removeItem(int Index)
 {
-    this->takeItem(Index);
+    delete this->takeItem(Index);
 }
 
 void MultileListView::mouseMoveEvent(QMouseEvent *e)   // 需判断前后的Item 是否发生改变，

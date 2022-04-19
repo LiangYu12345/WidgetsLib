@@ -7,6 +7,10 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
+/*!
+ * \brief 列表信息窗口
+ * \details 用于鼠标Hover显示列表的数据
+ */
 class WIDGETSLIB_EXPORT AreaInformationDisplay : public QWidget
 {
     Q_OBJECT

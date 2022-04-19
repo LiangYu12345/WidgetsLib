@@ -1,4 +1,4 @@
-#include "weaponconfigure.h"
+﻿#include "weaponconfigure.h"
 
 WeaponConfigure::WeaponConfigure(QWidget * parent)
     :QWidget(parent),
@@ -81,8 +81,8 @@ QPointF WeaponConfigure::getWeaponPosition(int mount)
 {
     auto &item = m_weaponMap.find(mount).value();
     QPointF pos = item.position;
-    pos.setX((pos.x()- 150)/30);
-    pos.setY((pos.y() - 230)/29);
+    pos.setX((pos.x()- 150)/25);
+    pos.setY((pos.y() - 230)/23);
     return pos;
 }
 
