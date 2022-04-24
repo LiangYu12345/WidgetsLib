@@ -19,7 +19,7 @@ void PitchAttitudeBars::setValue(float value)
 
 QRectF PitchAttitudeBars::boundingRect() const
 {
-    return QRectF(-100,-400,200,800);
+    return QRectF(-100,-m_pixPerDegree * 5,200,m_pixPerDegree * 5);
 }
 
 void PitchAttitudeBars::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -35,29 +35,35 @@ void PitchAttitudeBars::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     pen.setWidth(2);
     painter->setFont(QFont("Microsoft Yahei", 16));
     QFontMetricsF metrics(painter->font());
-    QString text = QString::number(m_value);
-    auto textBound = metrics.boundingRect(text);
 
+    int temp = (int)m_value/5 *5;
+
+    //上刻度  value + 5
+    QString uptext = QString::number(temp + 5);
+    auto uptextBound = metrics.boundingRect(uptext);
     pen.setStyle(Qt::SolidLine);
     painter->setPen(pen);
-    painter->drawLine(-w, -h*4/10,-w/2 ,-h*4/10);   //矩形占比
-    painter->drawLine(-w/2, -h*4/10,-w/2 ,-h*4/10+20);
-    painter->drawText(QRectF(-w, -h*4/10, textBound.width(), textBound.height()), Qt::AlignCenter, QString::number(m_value));
-    painter->drawLine(w, -h*4/10,w/2 ,-h*4/10);
-    painter->drawLine(w/2, -h*4/10,w/2 ,-h*4/10+20);
-    painter->drawText(QRectF(w-textBound.width(), -h*4/10, textBound.width(), textBound.height()), Qt::AlignCenter, QString::number(m_value));
+    painter->drawLine(-w, -h  + m_pixPerDegree * m_value,-w/2 ,-h + m_pixPerDegree * m_value);   //矩形占比
+    painter->drawLine(-w/2, -h + m_pixPerDegree * m_value,-w/2 ,-h+20 + m_pixPerDegree * m_value);
+    painter->drawText(QRectF(-w, -h + m_pixPerDegree * m_value, uptextBound.width(), uptextBound.height()), Qt::AlignCenter, uptext);
+    painter->drawLine(w, -h + m_pixPerDegree * m_value,w/2 ,-h + m_pixPerDegree * m_value);
+    painter->drawLine(w/2, -h + m_pixPerDegree * m_value,w/2 ,-h +20 + m_pixPerDegree * m_value);
+    painter->drawText(QRectF(w-uptextBound.width(), -h + m_pixPerDegree * m_value, uptextBound.width(), uptextBound.height()), Qt::AlignCenter, uptext);
 
 
+    //下刻度 value - 5
+    QString nexttext = QString::number(temp - 5);
+    auto nexttextBound = metrics.boundingRect(nexttext);
     pen.setStyle(Qt::CustomDashLine);
     QVector<qreal> dashes;
     dashes << 10 << 10 << 10 << 10;
     pen.setDashPattern(dashes);
     painter->setPen(pen);
-    painter->drawLine(-w, h*4/10,-w/2 ,h*4/10);    //矩形占比
-    painter->drawLine(-w/2, h*4/10,-w/2 ,h*4/10 -20);
-    painter->drawText(QRectF(-w, h*4/10 - textBound.height(), textBound.width(), textBound.height()), Qt::AlignCenter, QString::number(m_value));
-    painter->drawLine(w, h*4/10,w/2 ,h*4/10);
-    painter->drawLine(w/2, h*4/10,w/2 ,h*4/10 -20);
-    painter->drawText(QRectF(w, h*4/10 - textBound.height(), textBound.width(), textBound.height()), Qt::AlignCenter, QString::number(m_value));
+    painter->drawLine(-w, h + m_pixPerDegree * m_value,-w/2 ,h + m_pixPerDegree * m_value);    //矩形占比
+    painter->drawLine(-w/2, h + m_pixPerDegree * m_value,-w/2 ,h -20 + m_pixPerDegree * m_value);
+    painter->drawText(QRectF(-w, h - nexttextBound.height() + m_pixPerDegree * m_value, nexttextBound.width(), nexttextBound.height()), Qt::AlignCenter, nexttext);
+    painter->drawLine(w, h + m_pixPerDegree * m_value,w/2 ,h + m_pixPerDegree * m_value);
+    painter->drawLine(w/2, h + m_pixPerDegree * m_value,w/2 ,h -20 + m_pixPerDegree * m_value);
+    painter->drawText(QRectF(w-nexttextBound.width(), h - nexttextBound.height() + m_pixPerDegree * m_value, nexttextBound.width(), nexttextBound.height()), Qt::AlignCenter, nexttext);
 
 }

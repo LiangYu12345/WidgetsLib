@@ -277,6 +277,7 @@ void F16HUD::initScene()
 
     activeItem(m_pitchattitudebars);
     m_pitchattitudebars.setPos(0,-50);
+    m_pitchattitudebars.setValue(0);
 
 
     //中
@@ -334,7 +335,7 @@ void F16HUD::initScene()
 
 
 
-    //中
+//    // 中
 //    activeItem(m_guncross);
 //    m_guncross.setPos(0,-400);
 
