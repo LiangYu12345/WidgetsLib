@@ -245,7 +245,7 @@ void F16HUD::initScene()
     // 左下
     activeItem(m_maxgs);
     m_maxgs.setPos(-440,300);
-    m_maxgs.setValue(2.6);
+    m_maxgs.setValue(2.6f);
 
     activeItem(m_operatingmode);
     m_operatingmode.setPos(-440,330);
@@ -253,7 +253,7 @@ void F16HUD::initScene()
 
     activeItem(m_machnumber);
     m_machnumber.setPos(-365,280);
-    m_machnumber.setValue(0.88);
+    m_machnumber.setValue(0.88f);
 
     activeItem(m_masterarm);
     m_masterarm.setPos(-400,240);

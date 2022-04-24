@@ -1,4 +1,4 @@
-﻿    #ifndef F16HUD_H
+﻿#ifndef F16HUD_H
 #define F16HUD_H
 
 #include "../widgetslib_global.h"

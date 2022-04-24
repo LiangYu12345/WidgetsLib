@@ -14,8 +14,52 @@ add_library(${PROJECT_NAME} SHARED
   widgetslib_global.h
   Button/dragbutton.h
   Button/dragbutton.cpp
-  SidePanel/drawerwidget.h
-  SidePanel/drawerwidget.cpp
+  Button/switchbutton.h
+  Button/switchbutton.cpp
+  SidePanel/drawerpanel.h
+  SidePanel/drawerpanel.cpp
+  Table/tablewidget.h
+  Table/tablewidget.cpp
+  Table/polygontablewidget.h
+  Table/polygontablewidget.cpp
+  Table/execltablewidget.h
+  Table/execltablewidget.cpp
+  Table/waypointtablewidget.h
+  Table/waypointtablewidget.cpp
+  PFD/rollpitch.h
+  PFD/rollpitch.cpp
+  MissileConfigure/missileconfigure.h
+  MissileConfigure/missileconfigure.cpp
+  MissileConfigure/j20missileconfigure.h
+  MissileConfigure/j20missileconfigure.cpp
+  MissileConfigure/f35missileconfigure.h
+  MissileConfigure/f35missileconfigure.cpp
+  MissileConfigure/missile.h
+  MissileConfigure/missile.cpp
+  MissileConfigure/infraredmissile.h
+  MissileConfigure/infraredmissile.cpp
+  MissileConfigure/radarmissile.h
+  MissileConfigure/radarmissile.cpp
+  MissileConfigure/emptymissile.h
+  MissileConfigure/emptymissile.cpp
+  MultileListView/multilelistview.h
+  MultileListView/multilelistview.cpp
+  MultileListView/multilelistviewitem.h
+  MultileListView/multilelistviewitem.cpp
+  MultileListView/areainformationdisplay.h
+  MultileListView/areainformationdisplay.cpp
+  MissileConfigure/weaponconfigure.h
+  MissileConfigure/weaponconfigure.cpp
+  MissileConfigure/j20weaponconfigure.h
+  MissileConfigure/j20weaponconfigure.cpp
+  MissileConfigure/f35weaponconfigure.h
+  MissileConfigure/f35weaponconfigure.cpp
+  MissileConfigure/xxweapon.h
+  MissileConfigure/xxweapon.cpp
+  MissileConfigure/j20frontview.h
+  MissileConfigure/j20frontview.cpp
+  MissileConfigure/f35frontview.h
+  MissileConfigure/f35frontview.cpp
   HUD/huditem.h
   HUD/huditem.cpp
   HUD/f16hud.h
