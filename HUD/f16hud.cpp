@@ -222,7 +222,6 @@ void F16HUD::switcherMode(int mode)
         activeItem(m_missilereticle);
         m_missilereticle.setPos(0,-150);
 
-
         activeItem(m_leftlabelbeacon);
         m_leftlabelbeacon.setPos(-600,-80);
         m_leftlabelbeacon.setDirection(4);
@@ -238,33 +237,29 @@ void F16HUD::switcherMode(int mode)
 
         activeItem(m_flightpathmarker);
         m_flightpathmarker.setPos(0,100);
-        //左
 
+        //左
         activeItem(m_aim9missilediamond);
         m_aim9missilediamond.setPos(-350,-150);
-
 
         activeItem(m_tdbox);
         m_tdbox.setPos(0,0);
 
         //左下
-
         activeItem(m_aamissiletype);
         m_aamissiletype.setPos(-450,150);
 
         //右
-
         activeItem(m_mlerange);
         m_mlerange.setPos(450,-350);
-
 
         activeItem(m_missilelaunchenvelope);
         m_missilelaunchenvelope.setPos(460,-50);
 
         activeItem(m_targetclosurerate);
         m_targetclosurerate.setPos(380,0);
-        //右下
 
+        //右下
         activeItem(m_prelaunchaim9timeofflight);
         m_prelaunchaim9timeofflight.setPos(450,150);
 
