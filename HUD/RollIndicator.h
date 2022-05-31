@@ -29,9 +29,9 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 private:
-    float m_range = 80;
+    float m_range = 100;
     float m_value = 0;
-    float m_radius = 400;
+    float m_radius = 320;
     const float m_lineLen = 20;
     const float m_textWidth = 40;
 };

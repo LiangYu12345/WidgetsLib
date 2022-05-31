@@ -9,6 +9,11 @@ HorizonLine::HorizonLine()
 
 }
 
+void HorizonLine::setInclinationAngleValue(float value)
+{
+    m_angle = value;
+}
+
 QRectF HorizonLine::boundingRect() const
 {
     return QRectF(-960,-540,1920,1080);
@@ -18,13 +23,5 @@ void HorizonLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 {
     Q_UNUSED(widget);
     Q_UNUSED(option);
-    QPen pen(Qt::gray);
-    pen.setWidth(2);
-    painter->setPen(pen);
 
-    auto boundRect = boundingRect();
-    auto w = boundRect.width();
-    auto h = boundRect.height();
-    painter->drawLine(-w,0,-w/20,0);
-    painter->drawLine(w,0,w/20,0);
 }

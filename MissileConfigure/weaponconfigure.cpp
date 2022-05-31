@@ -30,7 +30,7 @@ void WeaponConfigure::setWeapon(int mount, const WeaponSpace &weapon)
     }
 
     // 更新位置
-    setWeaponPosition(mount, weapon.position);
+    //setWeaponPosition(mount, weapon.position);
 
     weapon.xx->show();
 }

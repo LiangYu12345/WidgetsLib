@@ -18,8 +18,8 @@ public:
     PitchAttitudeBars();
     /// 设置具体俯仰值
     void setValue(float value);
-    /// 设置倾斜角度
-    void setInclinationAngleValue();
+    /// 设置倾斜角度 (画笔倾斜角度)
+    void setInclinationAngleValue(float value);
     /// 外部设置俯仰角的显示位置
 public:
     virtual QRectF boundingRect() const override;
@@ -27,6 +27,7 @@ public:
 
 private:
     float m_value = 0;
+    float m_angle = 0;
     const float m_lineWidth = 20;
     const float m_textWidth = 40;
     const float m_pixPerDegree = 64;
