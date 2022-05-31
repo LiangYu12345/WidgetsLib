@@ -20,7 +20,7 @@ TableWidget::~TableWidget()
     delete m_tablewidget;
 }
 
-void TableWidget::appendHeader(QString name)
+void TableWidget::appendHorizontalHeader(QString name)
 {
     auto number = m_tablewidget->horizontalHeader()->count();
     m_tablewidget->insertColumn(number);
@@ -36,7 +36,7 @@ void TableWidget::appendHeader(QString name)
     }
 }
 
-void TableWidget::insertHeader(int number, WidgetType type, QString name)
+void TableWidget::insertHorizontalHeader(int number, WidgetType type, QString name)
 {
     m_tablewidget->insertColumn(number);
     QTableWidgetItem *item = new QTableWidgetItem(name,QTableWidgetItem::Type);
@@ -86,7 +86,7 @@ void TableWidget::insertHeader(int number, WidgetType type, QString name)
 
 }
 
-void TableWidget::removeHeader(int number)
+void TableWidget::removeHorizontalHeader(int number)
 {
     m_tablewidget->removeColumn(number);   //包含释放其内存
 }
@@ -96,6 +96,48 @@ void TableWidget::editHorizontalHeaderName(int column,QString &name)
     m_tablewidget->horizontalHeaderItem(column)->setText(name);
 }
 
+void TableWidget::appendVerticalHeader(QString name)
+{
+    auto number = m_tablewidget->verticalHeader()->count();
+    m_tablewidget->insertRow(number);
+    QTableWidgetItem *item = new QTableWidgetItem(name,QTableWidgetItem::Type);
+
+    m_tablewidget->setVerticalHeaderItem(number,item);
+
+    for(int nIndex = 0; nIndex < m_tablewidget->columnCount(); nIndex ++)
+    {
+        QTableWidgetItem * item = new QTableWidgetItem;
+        item->setTextAlignment(Qt::AlignCenter);
+        m_tablewidget->setItem(number,nIndex,item);
+    }
+    m_vlist.append(name);
+}
+
+void TableWidget::insertVerticalHeader(int number, WidgetType type, QString name)
+{
+    m_tablewidget->insertRow(number);
+    QTableWidgetItem *item = new QTableWidgetItem(name,QTableWidgetItem::Type);
+
+    m_tablewidget->setVerticalHeaderItem(number,item);
+
+    for(int nIndex = 0; nIndex < m_tablewidget->columnCount(); nIndex ++)
+    {
+        QTableWidgetItem * item = new QTableWidgetItem;
+        item->setTextAlignment(Qt::AlignCenter);
+        m_tablewidget->setItem(number,nIndex,item);
+    }
+    m_vlist.insert(number,name);
+}
+
+void TableWidget::removeVerticalHeader(int number)
+{
+    m_vlist.removeAt(number);
+}
+
+void TableWidget::editVerticalHeaderName(int row, QString &name)
+{
+    m_tablewidget->verticalHeaderItem(row)->setText(name);
+}
 
 QList<QTableWidgetItem *> TableWidget::m_points() const
 {
@@ -121,6 +163,16 @@ int TableWidget::getColumnCount() const
     return m_tablewidget->columnCount();
 }
 
+int TableWidget::getRowHeight() const
+{
+    return m_height;
+}
+
+int TableWidget::getColumnWidth() const
+{
+    return m_width;
+}
+
 void TableWidget::editPoint(int row, int column, QString value)
 {
     if(m_tablewidget->item(row,column) == nullptr)
@@ -130,7 +182,7 @@ void TableWidget::editPoint(int row, int column, QString value)
     }
     m_tablewidget->item(row,column)->setText(value);
 
-    //emit signalEdit(row,column,value);
+    emit changed(row,column,value);
 }
 
 void TableWidget::appendPoint()
@@ -144,7 +196,9 @@ void TableWidget::appendPoint()
         item->setTextAlignment(Qt::AlignCenter);
         m_tablewidget->setItem(row,nIndex,item);
     }
-    emit signalAdd(row);
+    m_vlist.append(QString::number(m_tablewidget->rowCount()));
+    emit append(row);
+    updateGeometry();
 }
 
 void TableWidget::insertPoint(int num)
@@ -157,31 +211,31 @@ void TableWidget::insertPoint(int num)
         item->setTextAlignment(Qt::AlignCenter);
         m_tablewidget->setItem(num,nIndex,item);
     }
-    emit signalAdd(num);
+    m_vlist.append(QString::number(num));
+    emit append(num);
+    updateGeometry();
 }
 
 void TableWidget::removePoint(int num)
 {
     m_tablewidget->removeRow(num);
-    emit signalRemoved(num);
-}
-
-void TableWidget::editVerticalHeaderName(int row, QString &name)
-{
-    m_tablewidget->verticalHeaderItem(row)->setText(name);
+    m_vlist.removeAt(num);
+    emit removed(num);
+    updateGeometry();
 }
 
 void TableWidget::clearAll()
 {
     m_tablewidget->clearContents();
+    emit clear();
 }
 
 QSize TableWidget::sizeHint() const
 {
-    return QSize(m_hlist.size() * 100, m_vlist.size() * 50);
+    return QSize(m_hlist.size() * m_width, m_vlist.size() * m_height + m_height);
 }
 
-void TableWidget::slotBtnClicked()
+void TableWidget::deleteBtnClicked()
 {
     auto btn = reinterpret_cast<QPushButton *>(sender());
     auto widget =btn->parent();
@@ -194,20 +248,20 @@ void TableWidget::slotBtnClicked()
 
 }
 
-void TableWidget::slotLineEditTextChanged(QString text)
+void TableWidget::lineEditTextChanged(QString text)
 {
     qDebug()<<text;
 }
 
-void TableWidget::slotChooseCurrentPointChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
+void TableWidget::currentPointChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
 {
     Q_UNUSED(previous);
-    if(m_currentitem == current)
+    if(m_currentItem == current)
         return;
-    m_currentitem = current;
+    m_currentItem = current;
 }
 
-void TableWidget::slotCellWidgetDoubleClicked(int row, int column)
+void TableWidget::cellWidgetDoubleClicked(int row, int column)
 {
     ;
 }
@@ -220,7 +274,10 @@ void TableWidget::resizeEvent(QResizeEvent *event)
 
 void TableWidget::Init()
 {
-    connect(m_tablewidget,&QTableWidget::currentItemChanged,this,&TableWidget::slotChooseCurrentPointChanged);
+    m_width = 52;
+    m_height = 25;
+
+    connect(m_tablewidget,&QTableWidget::currentItemChanged,this,&TableWidget::currentPointChanged);
 
     m_tablewidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
     m_tablewidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
@@ -234,14 +291,13 @@ void TableWidget::Init()
             m_tablewidget->setItem(nIndex,Index,new QTableWidgetItem());
     }
 
-    connect(m_tablewidget,&QTableWidget::cellDoubleClicked,this,&TableWidget::slotCellWidgetDoubleClicked);
+    connect(m_tablewidget,&QTableWidget::cellDoubleClicked,this,&TableWidget::cellWidgetDoubleClicked);
 
     Refresh();
 }
 
 void TableWidget::Refresh()
 {
-
     auto column = m_tablewidget->columnCount();
     auto row = m_tablewidget->rowCount();
 
@@ -249,7 +305,9 @@ void TableWidget::Refresh()
     {
         for(int nIndex = 0; nIndex < row; nIndex ++)
         {
-            m_tablewidget->item(nIndex,Index)->setTextAlignment(Qt::AlignCenter);
+            m_tablewidget->setRowHeight(nIndex, m_height);
+            m_tablewidget->setColumnWidth(Index, m_width);
+            m_tablewidget->item(nIndex, Index)->setTextAlignment(Qt::AlignCenter);
         }
     }
 }
@@ -265,7 +323,7 @@ QWidget *TableWidget::CreateBtnWdiget(const QString &btnname)
     layout->addWidget(btn);
 
     item->setLayout(layout);
-    connect(btn,&QPushButton::clicked,this,&TableWidget::slotBtnClicked);
+    connect(btn,&QPushButton::clicked,this,&TableWidget::deleteBtnClicked);
     return item;
 }
 
@@ -279,7 +337,7 @@ QWidget *TableWidget::CreateLineEditWdiget()
     layout->addWidget(lineEdit);
 
     item->setLayout(layout);
-    connect(lineEdit,&QLineEdit::textChanged,this,&TableWidget::slotLineEditTextChanged);
+    connect(lineEdit,&QLineEdit::textChanged,this,&TableWidget::lineEditTextChanged);
     return item;
 }
 

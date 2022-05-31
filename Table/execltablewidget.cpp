@@ -58,10 +58,10 @@ void ExeclTableWidget::insertTableCell(int type)
     case 2:
         break;
     case 3:
-        insertPoint(m_tablewidget->row(m_currentitem));
+        insertPoint(m_tablewidget->row(m_currentItem));
         break;
     case 4:
-        insertHeader(m_tablewidget->column(m_currentitem),WidgetType::Text,"");
+        insertHorizontalHeader(m_tablewidget->column(m_currentItem),WidgetType::Text,"");
         break;
     default:
         ;
@@ -76,10 +76,10 @@ void ExeclTableWidget::removeTableCell(int type)
     case 2:
         break;
     case 3:
-        removePoint(m_tablewidget->row(m_currentitem));
+        removePoint(m_tablewidget->row(m_currentItem));
         break;
     case 4:
-        removeHeader(m_tablewidget->column(m_currentitem));
+        removeHorizontalHeader(m_tablewidget->column(m_currentItem));
         break;
     default:
         ;

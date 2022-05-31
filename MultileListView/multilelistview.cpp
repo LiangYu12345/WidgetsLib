@@ -15,7 +15,6 @@ MultileListView::MultileListView(QWidget *parent)
     this->setWrapping(false);
     this->setFlow(QListView::LeftToRight);
     this->setIconSize(QSize(150, 150));
-    //this->resize(QSize(600, 100));
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -46,12 +45,15 @@ void MultileListView::addItem(int Index, const QString &name, const QPixmap &pix
 
 void MultileListView::appendItem(const QString &name, const QPixmap &pixmap)
 {
+    auto count = this->count();
     auto item = new QListWidgetItem(this);
 
     item->setIcon(pixmap);
     item->setText(name);
     item->setTextAlignment(Qt::AlignCenter);
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+    this->insertItem(count, item);
 }
 
 void MultileListView::removeItem(int Index)
@@ -99,3 +101,9 @@ void MultileListView::leaveEvent(QEvent *e)
 
     emit listLeaved();
 }
+
+//QSize MultileListView::sizeHint() const
+//{
+//    qDebug()<<this->count()<<"listWidgetCount";
+//    return QSize();
+//}

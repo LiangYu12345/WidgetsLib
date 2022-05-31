@@ -25,6 +25,7 @@ public:
 protected:
     virtual void mouseMoveEvent(QMouseEvent * e) override;
     virtual void leaveEvent(QEvent * e) override;
+    //virtual QSize sizeHint() const override;
 signals:
     void listItemEntered(QListWidgetItem *item);
     void listItemChanged(QListWidgetItem *pre, QListWidgetItem *cur);
