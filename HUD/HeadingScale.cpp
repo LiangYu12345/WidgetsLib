@@ -27,7 +27,7 @@ void HeadingScale::setValue(float value)
 
 QRectF HeadingScale::boundingRect() const
 {
-    const float w = m_pixPerDegree * m_range + 22;
+    const float w = m_pixPerDegree * m_range + 36;
     const float h = 100;
     return {-w/2, -50, w, h};
 }
@@ -43,32 +43,46 @@ void HeadingScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     painter->translate(-m_value * m_pixPerDegree, 0);
     int start = m_value - m_range / 2;
     int end = m_value + m_range / 2;
+
+    int mid = (start + (end - start)/2) *20;
+
+    start = int(start / 5) * 5;
+
+    QRectF textBound;
     for(int i = start; i <= end; i+=5) {
         int value = i;
-        if(value < 0)\
-
-
+        if(value < 0)
             value += 360;
         else if(value > 360)
             value -= 360;
         auto x = i * m_pixPerDegree;
+        QFontMetricsF metrics(painter->font());
+        QString text = QString::number(value);
+        textBound = metrics.boundingRect(text);
         if(value % 10 == 0) {
-            QFontMetricsF metrics(painter->font());
-            QString text =QString("0")+QString::number(value);
-            auto textBound = metrics.boundingRect(text);
+
             painter->drawLine(x, 0, x, m_lineHeight);
             if(m_value == value)
-            {
-                painter->drawRect(QRectF({x - textBound.width()/2 - 5, m_textHeight/2}, textBound.size() + QSize(10,0)));
-                painter->drawText(QRectF({x - textBound.width()/2 - 5, m_textHeight/2}, textBound.size() + QSize(10,0)), Qt::AlignHCenter|Qt::AlignBottom, text);
-            }
+                ;
             else {
                 QString text =QString::number(value);
                 auto textBound = metrics.boundingRect(text);
                 painter->drawText(QRectF({x - textBound.width()/2, m_textHeight/2}, textBound.size()), Qt::AlignHCenter|Qt::AlignBottom, text);
             }
         }
-        else
+        else{
             painter->drawLine(x, 0, x, m_lineHeight / 2);
+        }
     }
+    QFontMetricsF metrics(painter->font());
+    QString text = QString::number(360);
+    textBound = metrics.boundingRect(text);
+    if(m_value < 0)
+        m_value += 360;
+    else if(m_value > 360)
+        m_value -= 360;
+    m_value = int(m_value);
+    painter->drawRect(QRectF({mid - textBound.width()/2 - 5, m_textHeight/2}, textBound.size() + QSize(10,0)));
+    painter->drawText(QRectF({mid - textBound.width()/2 - 5, m_textHeight/2}, textBound.size() + QSize(10,0)), Qt::AlignHCenter|Qt::AlignBottom, QString::number(m_value));
+
 }

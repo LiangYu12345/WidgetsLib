@@ -112,7 +112,8 @@ add_library(${PROJECT_NAME} SHARED
   HUD/TimeToSteerpoint.cpp
   HUD/LabelBeacon.h
   HUD/LabelBeacon.cpp
-
+  HUD/labelbeaconline.h
+  HUD/labelbeaconline.cpp
   HUD/MissileReticle.h
   HUD/MissileReticle.cpp
   HUD/TargetAspect.h

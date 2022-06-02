@@ -67,161 +67,205 @@ void F16HUD::inactiveItem(QGraphicsItem &item)
     this->scene()->removeItem(&item);
 }
 
-void F16HUD::setDeclutterLevel(int level)
+void F16HUD::switcherMode(int mode)
 {
-//    bool active = level == 0;
-//    // active or inactive all at first
-//    active ? activeItem(polarityLabel)     :    inactiveItem(polarityLabel);
-//    active ? activeItem(sensorLabel)       :    inactiveItem(sensorLabel);
-//    active ? activeItem(fovIndicator)      :    inactiveItem(fovIndicator);
-//    active ? activeItem(zoomIndicator)     :    inactiveItem(zoomIndicator);
-//    active ? activeItem(digitFovLabel)     :    inactiveItem(digitFovLabel);
+    m_mode = mode;
+    if(mode == 1){
+        // 禁用其他模式的模块
+        inactiveItem(m_missilereticle);
+        inactiveItem(m_targetrange);
+        inactiveItem(m_aim9missilediamond);
+        inactiveItem(m_tdbox);
+        inactiveItem(m_aamissiletype);
+        inactiveItem(m_mlerange);
+        inactiveItem(m_missilelaunchenvelope);
+        inactiveItem(m_targetclosurerate);
+        inactiveItem(m_prelaunchaim9timeofflight);
+        inactiveItem(m_targetslantrange);
+        // 左
+        activeItem(m_airspeedscales);
+        m_airspeedscales.setValue(480);
+        m_airspeedscales.setPos(-480,-20);
 
-//    active ? activeItem(elIndicator)       :    inactiveItem(elIndicator);
-//    active ? activeItem(elLabel)           :    inactiveItem(elLabel);
-//    active ? activeItem(azIndicator)       :    inactiveItem(azIndicator);
-//    active ? activeItem(azLabel)           :    inactiveItem(azLabel);
-//    active ? activeItem(sateLabel)         :    inactiveItem(sateLabel);
-//    active ? activeItem(sateIcon)          :    inactiveItem(sateIcon);
+        activeItem(m_soisymbol);
+        m_soisymbol.setPos(-460,-240);
 
-//    active ? activeItem(FGLIndicator)      :    inactiveItem(FGLIndicator);
-//    active ? activeItem(FGLValueLabel)     :    inactiveItem(FGLValueLabel);
-//    active ? activeItem(FGLLabel)          :    inactiveItem(FGLLabel);
+        activeItem(m_currentg);
+        m_currentg.setPos(-440,-200);
+        m_currentg.setValue(1.0);
 
-//    active ? activeItem(crosshair)         :    inactiveItem(crosshair);
-//    active ? activeItem(northIndicator)    :    inactiveItem(northIndicator);
-//    active ? activeItem(messageLabel)      :    inactiveItem(messageLabel);
+        // 左下
+        activeItem(m_maxgs);
+        m_maxgs.setPos(-440,300);
+        m_maxgs.setValue(2.6f);
 
-//    active ? activeItem(acftLabel)         :    inactiveItem(acftLabel);
-//    active ? activeItem(acftLatLabel)      :    inactiveItem(acftLatLabel);
-//    active ? activeItem(acftLonLabel)      :    inactiveItem(acftLonLabel);
-//    active ? activeItem(acftAltLabel)      :    inactiveItem(acftAltLabel);
-//    active ? activeItem(acftYawLabel)      :    inactiveItem(acftYawLabel);
-//    active ? activeItem(acftGSLabel)       :    inactiveItem(acftGSLabel);
+        activeItem(m_operatingmode);
+        m_operatingmode.setPos(-440,330);
+        m_operatingmode.setValue(u8"NAV");
 
-//    active ? activeItem(OSS1Label)         :    inactiveItem(OSS1Label);
-//    active ? activeItem(OSS2Label)         :    inactiveItem(OSS2Label);
-//    active ? activeItem(OSS3Label)         :    inactiveItem(OSS3Label);
-//    active ? activeItem(OSS4Label)         :    inactiveItem(OSS4Label);
-//    active ? activeItem(OSS5Label)         :    inactiveItem(OSS5Label);
-//    active ? activeItem(OSS6Label)         :    inactiveItem(OSS6Label);
+        activeItem(m_machnumber);
+        m_machnumber.setPos(-365,280);
+        m_machnumber.setValue(0.88f);
 
-//    active ? activeItem(tgtLabel)          :    inactiveItem(tgtLabel);
-//    active ? activeItem(tgtLatLabel)       :    inactiveItem(tgtLatLabel);
-//    active ? activeItem(tgtLonLabel)       :    inactiveItem(tgtLonLabel);
-//    active ? activeItem(tgtAltLabel)       :    inactiveItem(tgtAltLabel);
-//    active ? activeItem(tgtRangeLabel)     :    inactiveItem(tgtRangeLabel);
-//    active ? activeItem(tgtKphLabel)       :    inactiveItem(tgtKphLabel);
+        activeItem(m_masterarm);
+        m_masterarm.setPos(-400,240);
+        m_masterarm.setValue(u8"SIM");
 
-//    active ? activeItem(dateLabel)         :    inactiveItem(dateLabel);
-//    active ? activeItem(timeLabel)         :    inactiveItem(timeLabel);
-//    active ? activeItem(modeLabel)         :    inactiveItem(modeLabel);
-//    active ? activeItem(laserLabel)        :    inactiveItem(laserLabel);
+        // 中上
+        activeItem(m_guncross);
+        m_guncross.setPos(0,-400);
 
-//    //active ? activeItem(trackingLable)     :    inactiveItem(trackingLable);
-//    active ? activeItem(preTrackIndicator) :    inactiveItem(preTrackIndicator);
-//    active ? activeItem(switchIndicator)   :    inactiveItem(switchIndicator);
+        activeItem(m_bankangleindicator);
+        m_bankangleindicator.setPos(0,-150);
 
-//    if(level == 0)  // all have been actived
-//        return;
-//    //
-//    if(level == 1) {
-//        activeItem(sensorLabel);
+        activeItem(m_flightpathmarker);
+        m_flightpathmarker.setPos(0,-190);
 
-//        activeItem(elIndicator);
-//        activeItem(elLabel);
-//        activeItem(azIndicator);
-//        activeItem(azLabel);
+        activeItem(m_greatcirclesteeringcue);
+        m_greatcirclesteeringcue.setPos(100,-170);
 
-//        activeItem(crosshair);
-//        activeItem(northIndicator);
+        activeItem(m_steerpointsymbol);
+        m_steerpointsymbol.setPos(200,-100);
 
-//        activeItem(acftLabel);
-//        activeItem(acftLatLabel);
-//        activeItem(acftLonLabel);
-//        activeItem(acftAltLabel);
-//        activeItem(acftYawLabel);
-//        activeItem(acftGSLabel);
+        //中
+        activeItem(m_leftlabelbeacon);
+        m_leftlabelbeacon.setPos(-600,-80);
+        m_leftlabelbeacon.setDirection(4);
+        m_leftlabelbeacon.setValue(480);
 
-//        activeItem(tgtLabel);
-//        activeItem(tgtLatLabel);
-//        activeItem(tgtLonLabel);
-//        activeItem(tgtAltLabel);
-//        activeItem(tgtRangeLabel);
-//        activeItem(tgtKphLabel);
+        activeItem(m_leftlabelbeaconline);
+        m_leftlabelbeaconline.setTextVisible(true);
+        m_leftlabelbeaconline.setPos(-450,-80);
 
-//        activeItem(dateLabel);
-//        activeItem(timeLabel);
-//        activeItem(modeLabel);
-//    }
-//    else if(level == 2) {
-//        activeItem(sensorLabel);
+        activeItem(m_rightlabelbeacon);
+        m_rightlabelbeacon.setPos(480,-80);
+        m_rightlabelbeacon.setDirection(3);
+        m_rightlabelbeacon.setValue(12500);
 
-//        activeItem(crosshair);
-//        activeItem(northIndicator);
+        activeItem(m_rightlabelbeaconline);
+        m_rightlabelbeaconline.setTextVisible(false);
+        m_rightlabelbeaconline.setPos(400,-80);
 
-//        activeItem(OSS1Label);
-//        activeItem(OSS2Label);
-//        activeItem(OSS3Label);
-//        activeItem(OSS4Label);
-//        activeItem(OSS5Label);
-//        activeItem(OSS6Label);
+        //中下
+        activeItem(m_rollindicator);
+        m_rollindicator.setPos(0,100);
+        m_rollindicator.setValue(0);
 
-//        activeItem(dateLabel);
-//        activeItem(timeLabel);
-//    }
-//    else if(level == 3) {
-//        activeItem(crosshair);
-//        activeItem(northIndicator);
-//    }
-}
+        activeItem(m_offsetaimpoint);
+        m_offsetaimpoint.setPos(-150,50);
 
-void F16HUD::triggerFGLHUD(const QString &label)
-{
-//    static QTimer *timer = nullptr;
-//    if(timer)
-//        timer->start(5e3);
-//    else {
-//        timer = new QTimer(this);
-//        connect(timer, &QTimer::timeout, this, [&](){
-//            FGLLabel.hide();
-//            FGLValueLabel.hide();
-//            FGLIndicator.hide();
-//        });
-//    }
+        activeItem(m_headingscale);
+        m_headingscale.setPos(0,150);
 
-//    FGLLabel.setText(label);
-//    FGLLabel.show();
-//    FGLValueLabel.show();
-//    FGLIndicator.show();
-}
+        // 右
+        activeItem(m_baroaltitudescales);
+        m_baroaltitudescales.setPos(480,-20);
+        m_baroaltitudescales.setValue(12500);
 
-void F16HUD::setLaserEnable(const QString &text)
-{
-//    laserLabel.setText(text);
-//    laserLabel.show();
-}
+        //右下
+        activeItem(m_radaraltitude);
+        m_radaraltitude.setPos(480,280);
+        m_radaraltitude.setValue(11850);
 
-void F16HUD::setLaserDisable()
-{
-//    laserLabel.hide();
-}
+        activeItem(m_altitudelowsetting);
+        m_altitudelowsetting.setPos(480,310);
+        m_altitudelowsetting.setValue(200);
 
-void F16HUD::setLaserWork(int timeoutSecond)
-{
-//    laserIndicator.trigger(timeoutSecond);
-//    laserLabel.setBorder({Qt::white});
-//    if(timeoutSecond != 0) {
-//        QTimer::singleShot(timeoutSecond * 1e3, this, [&](){
-//            laserLabel.setBorder(Qt::NoPen);
-//        });
-//    }
-}
+        activeItem(m_slantrange);
+        m_slantrange.setPos(480,340);
+        m_slantrange.setValue(u8"B018.7");
 
-void F16HUD::setLaserStop()
-{
-//    laserIndicator.stop();
-//    laserLabel.setBorder(Qt::NoPen);
+        activeItem(m_timetosteerpoint);
+        m_timetosteerpoint.setPos(480,370);
+        m_timetosteerpoint.setValue(u8"01 53");
+
+        activeItem(m_distancetosteerpoint);
+        m_distancetosteerpoint.setPos(480,400);
+        m_distancetosteerpoint.setValue(u8"018");
+        m_distancetosteerpoint.setDisToValue(u8"03");
+
+        // 俯仰 最上层
+        activeItem(m_pitchattitudebars);
+        m_pitchattitudebars.setPos(0,-50);
+        m_pitchattitudebars.setValue(0);
+        m_pitchattitudebars.setInclinationAngleValue(0);
+    }
+    else if(mode == 2){
+        //禁用其他模式的模块
+        inactiveItem(m_airspeedscales);
+        inactiveItem(m_soisymbol);
+        inactiveItem(m_currentg);
+        inactiveItem(m_maxgs);
+        inactiveItem(m_operatingmode);
+        inactiveItem(m_machnumber);
+        inactiveItem(m_masterarm);
+        inactiveItem(m_bankangleindicator);
+        inactiveItem(m_greatcirclesteeringcue);
+        inactiveItem(m_steerpointsymbol);
+        inactiveItem(m_leftlabelbeaconline);
+        inactiveItem(m_rightlabelbeaconline);
+        inactiveItem(m_rollindicator);
+        inactiveItem(m_offsetaimpoint);
+        inactiveItem(m_headingscale);
+        inactiveItem(m_baroaltitudescales);
+        inactiveItem(m_radaraltitude);
+        inactiveItem(m_altitudelowsetting);
+        inactiveItem(m_slantrange);
+        inactiveItem(m_timetosteerpoint);
+        inactiveItem(m_distancetosteerpoint);
+        inactiveItem(m_pitchattitudebars);
+
+        // 中
+        activeItem(m_guncross);
+        m_guncross.setPos(0,-400);
+
+        activeItem(m_missilereticle);
+        m_missilereticle.setPos(0,-150);
+
+        activeItem(m_leftlabelbeacon);
+        m_leftlabelbeacon.setPos(-600,-80);
+        m_leftlabelbeacon.setDirection(4);
+        m_leftlabelbeacon.setValue(480);
+
+        activeItem(m_rightlabelbeacon);
+        m_rightlabelbeacon.setPos(480,-80);
+        m_rightlabelbeacon.setDirection(3);
+        m_rightlabelbeacon.setValue(12500);
+
+        activeItem(m_targetrange);
+        m_targetrange.setPos(0,0);
+
+        activeItem(m_flightpathmarker);
+        m_flightpathmarker.setPos(0,100);
+
+        //左
+        activeItem(m_aim9missilediamond);
+        m_aim9missilediamond.setPos(-350,-150);
+
+        activeItem(m_tdbox);
+        m_tdbox.setPos(0,0);
+
+        //左下
+        activeItem(m_aamissiletype);
+        m_aamissiletype.setPos(-450,150);
+
+        //右
+        activeItem(m_mlerange);
+        m_mlerange.setPos(450,-350);
+
+        activeItem(m_missilelaunchenvelope);
+        m_missilelaunchenvelope.setPos(460,-50);
+
+        activeItem(m_targetclosurerate);
+        m_targetclosurerate.setPos(380,0);
+
+        //右下
+        activeItem(m_prelaunchaim9timeofflight);
+        m_prelaunchaim9timeofflight.setPos(450,150);
+
+        activeItem(m_targetslantrange);
+        m_targetslantrange.setPos(400,250);
+    }
 }
 
 void F16HUD::initScene()
@@ -231,162 +275,15 @@ void F16HUD::initScene()
     // 综合考虑之后，将屏幕中心设置为坐标原点
     scene->setSceneRect(-1920/2, -1080/2, 1920, 1080);
 
-    // 左
-    activeItem(m_airspeedscales);
-    m_airspeedscales.setValue(480);
-    m_airspeedscales.setPos(-480,-20);
+    // 默认初始导航模式
+    switcherMode(1);
 
-    activeItem(m_soisymbol);
-    m_soisymbol.setPos(-460,-240);
-
-    activeItem(m_currentg);
-    m_currentg.setPos(-440,-200);
-    m_currentg.setValue(1.0);
-    // 左下
-    activeItem(m_maxgs);
-    m_maxgs.setPos(-440,300);
-    m_maxgs.setValue(2.6f);
-
-    activeItem(m_operatingmode);
-    m_operatingmode.setPos(-440,330);
-    m_operatingmode.setValue(u8"NAV");
-
-    activeItem(m_machnumber);
-    m_machnumber.setPos(-365,280);
-    m_machnumber.setValue(0.88f);
-
-    activeItem(m_masterarm);
-    m_masterarm.setPos(-400,240);
-    m_masterarm.setValue(u8"SIM");
-
-    // 中上
-    activeItem(m_guncross);
-    m_guncross.setPos(0,-400);
-
-    activeItem(m_bankangleindicator);
-    m_bankangleindicator.setPos(0,-150);
-
-    activeItem(m_flightpathmarker);
-    m_flightpathmarker.setPos(0,-190);
-
-    activeItem(m_greatcirclesteeringcue);
-    m_greatcirclesteeringcue.setPos(100,-170);
-
-    activeItem(m_steerpointsymbol);
-    m_steerpointsymbol.setPos(200,-100);
-
-    activeItem(m_pitchattitudebars);
-    m_pitchattitudebars.setPos(0,-50);
-
-
-    //中
-    activeItem(m_horizonline);
-    m_horizonline.setPos(0,-40);
-
-    activeItem(m_leftlabelbeacon);
-    m_leftlabelbeacon.setPos(-600,-80);
-    m_leftlabelbeacon.setDirection(4);
-    m_leftlabelbeacon.setValue(u8"480");
-
-    activeItem(m_rightlabelbeacon);
-    m_rightlabelbeacon.setPos(480,-80);
-    m_rightlabelbeacon.setDirection(3);
-    m_rightlabelbeacon.setValue(u8"12,500");
-
-    //中下
-    activeItem(m_rollindicator);
-    m_rollindicator.setPos(0,0);
-
-    activeItem(m_offsetaimpoint);
-    m_offsetaimpoint.setPos(-150,50);
-
-    activeItem(m_headingscale);
-    m_headingscale.setPos(0,150);
-
-    // 右
-    activeItem(m_baroaltitudescales);
-    m_baroaltitudescales.setPos(480,-20);
-    m_baroaltitudescales.setValue(12500);
-
-    //右下
-    activeItem(m_radaraltitude);
-    m_radaraltitude.setPos(480,280);
-    m_radaraltitude.setValue(11850);
-
-    activeItem(m_altitudelowsetting);
-    m_altitudelowsetting.setPos(480,310);
-    m_altitudelowsetting.setValue(200);
-
-    activeItem(m_slantrange);
-    m_slantrange.setPos(480,340);
-    m_slantrange.setValue(u8"B018.7");
-
-    activeItem(m_timetosteerpoint);
-    m_timetosteerpoint.setPos(480,370);
-    m_timetosteerpoint.setValue(u8"01 53");
-
-    activeItem(m_distancetosteerpoint);
-    m_distancetosteerpoint.setPos(480,400);
-    m_distancetosteerpoint.setValue(u8"018");
-    m_distancetosteerpoint.setDisToValue(u8"03");
-
-
-
-
-
-    //中
-//    activeItem(m_guncross);
-//    m_guncross.setPos(0,-400);
-
-//    activeItem(m_missilereticle);
-//    m_missilereticle.setPos(0,-150);
-
-
-//    activeItem(m_leftlabelbeacon);
-//    m_leftlabelbeacon.setPos(-600,-80);
-//    m_leftlabelbeacon.setDirection(4);
-//    m_leftlabelbeacon.setValue(u8"480");
-
-//    activeItem(m_rightlabelbeacon);
-//    m_rightlabelbeacon.setPos(480,-80);
-//    m_rightlabelbeacon.setDirection(3);
-//    m_rightlabelbeacon.setValue(u8"12,500");
-
-//    activeItem(m_targetrange);
-//    m_targetrange.setPos(0,0);
-
-//    activeItem(m_flightpathmarker);
-//    m_flightpathmarker.setPos(0,100);
-//    //左
-
-//    activeItem(m_aim9missilediamond);
-//    m_aim9missilediamond.setPos(-350,-150);
-
-
-//    activeItem(m_tdbox);
-//    m_tdbox.setPos(0,0);
-
-//    //左下
-
-//    activeItem(m_aamissiletype);
-//    m_aamissiletype.setPos(-450,150);
-
-//    //右
-
-//    activeItem(m_mlerange);
-//    m_mlerange.setPos(450,-350);
-
-
-//    activeItem(m_missilelaunchenvelope);
-//    m_missilelaunchenvelope.setPos(460,-50);
-
-//    activeItem(m_targetclosurerate);
-//    m_targetclosurerate.setPos(380,0);
-//    //右下
-
-//    activeItem(m_prelaunchaim9timeofflight);
-//    m_prelaunchaim9timeofflight.setPos(450,150);
-
-//    activeItem(m_targetslantrange);
-//    m_targetslantrange.setPos(400,250);
+//    QTimer *time = new QTimer;
+//    connect(time,&QTimer::timeout,this,[=](){
+//        m_mode ++;
+//        if(m_mode > 2)
+//            m_mode = 1;
+//        switcherMode(m_mode);
+//    });
+//    time->start(5*1e3);
 }

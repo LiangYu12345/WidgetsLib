@@ -50,19 +50,41 @@ void f16RollIndicator::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->setBrush(Qt::green);
     painter->setPen(QPen(Qt::green, 2));
     painter->setClipRect(boundingRect());
-    float start = m_value - m_range/2;
-    float end = m_value + m_range/2;
+//    float start = m_value - m_range/2;
+//    float end = m_value + m_range/2;
+//    start = int(start / 5) * 5;
+//    painter->save();
+//    //painter->rotate(start - m_value);
+//    for(int i = start; i <= end; i+=10) {
+//        if(i % 20 == 0)
+//            painter->drawLine(0, m_radius, 0, m_radius - m_lineLen);
+//        else
+//            painter->drawLine(0, m_radius-m_lineLen/2, 0, m_radius - m_lineLen);
+//        painter->rotate(10);
+//    }
+//    painter->restore();
+
+
+    float start = -m_range/2;
+    float end = m_range/2;
     start = int(start / 5) * 5;
     painter->save();
-    painter->rotate(start - m_value);
-    for(int i = start; i <= end; i+=10) {
-        if(i % 20 == 0)
+    painter->rotate(start);
+    for(int i = start; i <= end; i+=10){
+        if(i % 30 == 0)
             painter->drawLine(0, m_radius, 0, m_radius - m_lineLen);
-        else
+        else if(i % 50 == 0)
+            painter->drawLine(0, m_radius, 0, m_radius - m_lineLen);
+        else if(i % 10 == 0 && i <= 20 && i >= -20)
             painter->drawLine(0, m_radius-m_lineLen/2, 0, m_radius - m_lineLen);
         painter->rotate(10);
     }
     painter->restore();
+
+
+    painter->save();
+    painter->rotate(-m_value);
+
     const float xDelta = m_lineLen / 4;
     const float yLen = m_lineLen / 2;
     QPointF triangle[3] = {
@@ -71,4 +93,6 @@ void f16RollIndicator::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QPointF(xDelta, m_radius+yLen)
     };
     painter->drawPolygon(triangle, 3);
+
+    painter->restore();
 }

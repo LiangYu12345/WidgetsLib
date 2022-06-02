@@ -9,7 +9,7 @@ LabelBeacon::LabelBeacon()
 
 }
 
-void LabelBeacon::setValue(QString value)
+void LabelBeacon::setValue(double value)
 {
     if(m_value == value)
         return;
@@ -88,6 +88,9 @@ void LabelBeacon::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->drawPolygon(polygn,5);
 
     QFontMetricsF metrics(painter->font());
-    auto textBound = metrics.boundingRect(m_value);
-    painter->drawText(QRectF(20, h/2 - textBound.height()/2, textBound.width(), textBound.height()), Qt::AlignCenter, m_value);
+    int front = m_value / 1000;
+    int back = m_value - front * 1000;
+    QString text = QString::number(front) + "," + QString::number(back);
+    auto textBound = metrics.boundingRect(text);
+    painter->drawText(QRectF(20, h/2 - textBound.height()/2, textBound.width(), textBound.height()), Qt::AlignCenter, text);
 }
