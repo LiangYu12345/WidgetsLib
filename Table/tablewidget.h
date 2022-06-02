@@ -48,8 +48,10 @@ public:
     int getColumnCount() const;
     int getRowHeight() const;
     int getColumnWidth() const;
+    //编辑表格中一个Point的单个数据   / noet: 差一个编辑表格中一个点的单个数据的数据类型：Icon，Btn
+    void editPoint(int row,int column,QString value);
     //编辑表格中一个Point的单个数据
-    void editPoint(int row,int column,QString value);    // 差一个编辑表格中一个点的单个数据的数据类型：Icon，Btn
+    void onEditPoint(int row,int column);
     //添加一行  默认为空
     void appendPoint();
     //插入至某行

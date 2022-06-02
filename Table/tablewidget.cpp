@@ -175,13 +175,21 @@ int TableWidget::getColumnWidth() const
 
 void TableWidget::editPoint(int row, int column, QString value)
 {
+    disconnect(m_tablewidget,&QTableWidget::cellChanged,this,&TableWidget::onEditPoint);
     if(m_tablewidget->item(row,column) == nullptr)
     {
-        qDebug()<< u8"错误修改";
+        qDebug()<< u8"error cell text changed";
         return;
     }
+    if(value == m_tablewidget->item(row,column)->text())
+        return;
     m_tablewidget->item(row,column)->setText(value);
+}
 
+void TableWidget::onEditPoint(int row, int column)
+{
+//    qDebug()<<"Edited";
+    auto value = m_tablewidget->item(row,column)->text();
     emit changed(row,column,value);
 }
 
@@ -199,6 +207,7 @@ void TableWidget::appendPoint()
     m_vlist.append(QString::number(m_tablewidget->rowCount()));
     emit append(row);
     updateGeometry();
+    Refresh();
 }
 
 void TableWidget::insertPoint(int num)
@@ -214,6 +223,7 @@ void TableWidget::insertPoint(int num)
     m_vlist.append(QString::number(num));
     emit append(num);
     updateGeometry();
+    Refresh();
 }
 
 void TableWidget::removePoint(int num)
@@ -222,6 +232,7 @@ void TableWidget::removePoint(int num)
     m_vlist.removeAt(num);
     emit removed(num);
     updateGeometry();
+    Refresh();
 }
 
 void TableWidget::clearAll()
@@ -255,6 +266,7 @@ void TableWidget::lineEditTextChanged(QString text)
 
 void TableWidget::currentPointChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
 {
+//    qDebug()<<"currentChange";
     Q_UNUSED(previous);
     if(m_currentItem == current)
         return;
@@ -263,7 +275,8 @@ void TableWidget::currentPointChanged(QTableWidgetItem *current, QTableWidgetIte
 
 void TableWidget::cellWidgetDoubleClicked(int row, int column)
 {
-    ;
+//    qDebug()<<"doubleClicked";
+
 }
 
 void TableWidget::resizeEvent(QResizeEvent *event)
@@ -277,8 +290,6 @@ void TableWidget::Init()
     m_width = 52;
     m_height = 25;
 
-    connect(m_tablewidget,&QTableWidget::currentItemChanged,this,&TableWidget::currentPointChanged);
-
     m_tablewidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
     m_tablewidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
     m_tablewidget->horizontalHeader()->setDefaultAlignment(Qt::AlignHCenter);
@@ -287,28 +298,41 @@ void TableWidget::Init()
 
     for(int Index = 0; Index < m_tablewidget->columnCount(); Index ++)
     {
-        for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++)
+        for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++){
             m_tablewidget->setItem(nIndex,Index,new QTableWidgetItem());
-    }
-
-    connect(m_tablewidget,&QTableWidget::cellDoubleClicked,this,&TableWidget::cellWidgetDoubleClicked);
-
-    Refresh();
-}
-
-void TableWidget::Refresh()
-{
-    auto column = m_tablewidget->columnCount();
-    auto row = m_tablewidget->rowCount();
-
-    for(int Index = 0; Index < column; Index ++)
-    {
-        for(int nIndex = 0; nIndex < row; nIndex ++)
-        {
             m_tablewidget->setRowHeight(nIndex, m_height);
             m_tablewidget->setColumnWidth(Index, m_width);
             m_tablewidget->item(nIndex, Index)->setTextAlignment(Qt::AlignCenter);
         }
+
+    }
+//    connect(m_tablewidget,&QTableWidget::cellActivated,this,[](){qDebug()<<"cellActived";});
+//    connect(m_tablewidget,&QTableWidget::cellClicked,this,[](){qDebug()<<"cellClicked";});
+//    connect(m_tablewidget,&QTableWidget::cellEntered,this,[](){qDebug()<<"cellEnterd";});
+//    connect(m_tablewidget,&QTableWidget::cellPressed,this,[](){qDebug()<<"cellPressed";});
+
+//    connect(m_tablewidget,&QTableWidget::itemActivated,this,[](){qDebug()<<"itemActivated";});
+//    connect(m_tablewidget,&QTableWidget::itemChanged,this,[](){qDebug()<<"itemChanged";});
+//    connect(m_tablewidget,&QTableWidget::itemDoubleClicked,this,[](){qDebug()<<"itemDoubleClicked";});
+//    connect(m_tablewidget,&QTableWidget::itemEntered,this,[](){qDebug()<<"itemEntered";});
+//    connect(m_tablewidget,&QTableWidget::itemPressed,this,[](){qDebug()<<"itemPressed";});
+    connect(m_tablewidget,&QTableWidget::itemSelectionChanged,this,[=](){
+        connect(m_tablewidget,&QTableWidget::cellChanged,this,&TableWidget::onEditPoint);
+    });
+
+    // 当前选项Cell 改变
+    connect(m_tablewidget,&QTableWidget::currentItemChanged,this,&TableWidget::currentPointChanged);
+    // 双击Cell
+//    connect(m_tablewidget,&QTableWidget::cellDoubleClicked,this,&TableWidget::cellWidgetDoubleClicked);
+
+    //m_tablewidget->setShowGrid(false);
+    m_tablewidget->setAlternatingRowColors(true);
+}
+
+void TableWidget::Refresh()
+{
+    for(int nIndex = 0; nIndex < m_tablewidget->rowCount(); nIndex ++){
+        m_tablewidget->item(nIndex, 0)->setText(QString::number(nIndex));
     }
 }
 
