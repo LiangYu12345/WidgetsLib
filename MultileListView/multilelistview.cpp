@@ -23,22 +23,45 @@ MultileListView::MultileListView(QWidget *parent)
     this->setHorizontalScrollMode(QListWidget::ScrollPerPixel);
     QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
 
-    connect(this,&MultileListView::itemEntered,this,[=](QListWidgetItem *item){ m_isItemHover = true; m_current = item; emit listItemEntered(item);});
+    connect(this,&MultileListView::itemEntered,this,[=](QListWidgetItem *item){ m_isItemHover = true; m_current = (MultileListViewItem*)item; emit listItemEntered(m_current);});
     connect(this,&MultileListView::listLeaved,this,[=](){ m_isItemHover = false; emit listItemLeaved();});
 
     connect(this,&MultileListView::currentItemChanged,this,[=](QListWidgetItem *pre,QListWidgetItem *cur){
-        emit listItemChanged(pre, cur);
+        emit listItemChanged((MultileListViewItem*)pre, (MultileListViewItem*)cur);
     });
 }
 
 void MultileListView::addItem(int Index, const QString &name, const QPixmap &pixmap)
 {
-    auto item = new QListWidgetItem;
+    MultileListViewItem * item =  nullptr;
+    if(name == "J20"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(1);
+    }
+    else if(name == "F35"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(2);
+    }
+    else if(name == u8"圆形"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(3);
+    }
+    else if(name == u8"矩形"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(4);
+    }
+    else if(name == u8"多边形"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(5);
+    }
+    //auto item = new QListWidgetItem(pixmap, name, this, 1001);
 
     item->setIcon(pixmap);
     item->setText(name);
     item->setTextAlignment(Qt::AlignCenter);
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+    qDebug()<<item->getType() << item->type() << item->Type << item->UserType;
 
     this->insertItem(Index, item);
 }
@@ -46,7 +69,27 @@ void MultileListView::addItem(int Index, const QString &name, const QPixmap &pix
 void MultileListView::appendItem(const QString &name, const QPixmap &pixmap)
 {
     auto count = this->count();
-    auto item = new QListWidgetItem(this);
+    MultileListViewItem * item =  nullptr;
+    if(name == "J20"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(1);
+    }
+    else if(name == "F35"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(2);
+    }
+    else if(name == u8"圆形"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(3);
+    }
+    else if(name == u8"矩形"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(4);
+    }
+    else if(name == u8"多边形"){
+        item = new MultileListViewItem(pixmap, name, this);
+        item->setType(5);
+    }
 
     item->setIcon(pixmap);
     item->setText(name);
@@ -61,9 +104,32 @@ void MultileListView::removeItem(int Index)
     delete this->takeItem(Index);
 }
 
+void MultileListView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    auto item = (MultileListViewItem *)itemAt(event->pos());
+    if(item == nullptr)
+        return;
+
+    if(item->getType() == 1){
+        qDebug()<<item->getType();
+    }
+    else if(item->getType() == 2){
+        qDebug()<<item->getType();
+    }
+    else if(item->getType() == 3){
+        qDebug()<<item->getType();
+    }
+    else if(item->getType() == 4){
+        qDebug()<<item->getType();
+    }
+    else if(item->getType() == 5){
+        qDebug()<<item->getType();
+    }
+}
+
 void MultileListView::mouseMoveEvent(QMouseEvent *e)   // 需判断前后的Item 是否发生改变，
 {
-    auto item = dynamic_cast<QListWidgetItem *>(itemAt(e->pos()));
+    auto item = dynamic_cast<MultileListViewItem *>(itemAt(e->pos()));
 
     // 判断item 是否改变
     if(item != m_current){
@@ -73,8 +139,8 @@ void MultileListView::mouseMoveEvent(QMouseEvent *e)   // 需判断前后的Item
 
         // 改变之后 判断是否重新进入同一个Item
         // (Note: 进入一个Item 再移出当前Item 现指向null 再重新移入那个Item QListWidget没有识别重新进入Item,因为QListWidget没有leaveItem的信号)
-        if(item != nullptr)
-            emit listItemEntered(item);
+        //if(item != nullptr)
+        //   emit listItemEntered(item);
     }
 
     if(item == nullptr && !m_isItemHover)

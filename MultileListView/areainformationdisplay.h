@@ -21,9 +21,16 @@ public:
     void appendItem(const QString &name, const QString &value);
     void removeItem(int Index);
     void changeItem(int Index, const QString &name, const QString &value);
+    void changeItemKey(int Index, const QString &name);
     void changeItemVal(int Index, const QString &value);
+
+    /// int type 代表当前列表信息窗口显示的数据类型
+    /// note: 1：J20   2：F35    3：圆形    4：矩形      5：多边形
+    void chooseMode(const int &type);
 signals:
 
+private:
+    void dealRowCount(const int &value);
 private:
     QGridLayout * m_gLayout;
 

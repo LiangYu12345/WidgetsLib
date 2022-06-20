@@ -288,7 +288,7 @@ void TableWidget::resizeEvent(QResizeEvent *event)
 void TableWidget::Init()
 {
     m_width = 52;
-    m_height = 25;
+    m_height = 26;
 
     m_tablewidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
     m_tablewidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);  //表头拓展
