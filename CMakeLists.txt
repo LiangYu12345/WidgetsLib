@@ -139,11 +139,10 @@ add_library(${PROJECT_NAME} SHARED
 )
 add_library(Lib::Widgets ALIAS ${PROJECT_NAME})
 
-
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Positioning REQUIRED)
 #
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Positioning)
 
 #
 target_compile_definitions(${PROJECT_NAME} PRIVATE WIDGETSLIB_LIBRARY)

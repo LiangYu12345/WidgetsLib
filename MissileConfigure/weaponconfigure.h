@@ -17,14 +17,14 @@ public:
         XXWeapon *xx;
     };
     WeaponConfigure(QWidget * parent = nullptr);
-
-    void setWeapon(int mount, const WeaponSpace &weapon);
-    void removeWeapon(int mount);
     void clearWeapon();
     XXWeapon *weapon(int mount);
     WeaponSpace *weaponMount(int mount);
 
     /// 移动武器到指定位置
+
+    void setWeapon(int mount, const WeaponSpace &weapon);
+    void removeWeapon(int mount);
     /// \param point x对应机头方向 y对应机翼方向 单位：米
     void setWeaponPosition(int mount,QPointF pos);
     QPointF getWeaponPosition(int mount);

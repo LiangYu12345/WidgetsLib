@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QScroller>
 #include <QDebug>
+#include "multilelistviewitem.h"
 
 MultileListView::MultileListView(QWidget *parent)
     : QListWidget(parent),
@@ -37,6 +38,11 @@ void MultileListView::addItem(int Index, const QString &name, const QPixmap &pix
     if(name == "J20"){
         item = new MultileListViewItem(pixmap, name, this);
         item->setType(1);
+        ListView::FlightPayload pay;
+        pay.name = name;
+        pay.id = 1;
+        pay.coord = {1.0,2.0,3.0};
+        item->setFlightPayload(0, pay);
     }
     else if(name == "F35"){
         item = new MultileListViewItem(pixmap, name, this);
@@ -54,7 +60,6 @@ void MultileListView::addItem(int Index, const QString &name, const QPixmap &pix
         item = new MultileListViewItem(pixmap, name, this);
         item->setType(5);
     }
-    //auto item = new QListWidgetItem(pixmap, name, this, 1001);
 
     item->setIcon(pixmap);
     item->setText(name);
@@ -111,19 +116,21 @@ void MultileListView::mouseDoubleClickEvent(QMouseEvent *event)
         return;
 
     if(item->getType() == 1){
-        qDebug()<<item->getType();
+        qDebug()<<u8"J20"<<item->getType();
+        emit listFlightDoubleClicked(item->getFlightPayload(0));
     }
     else if(item->getType() == 2){
-        qDebug()<<item->getType();
+        qDebug()<<u8"F35"<<item->getType();
+        emit listFlightDoubleClicked(item->getFlightPayload(0));
     }
     else if(item->getType() == 3){
-        qDebug()<<item->getType();
+        qDebug()<<u8"圆"<<item->getType();
     }
     else if(item->getType() == 4){
-        qDebug()<<item->getType();
+        qDebug()<<u8"矩形"<<item->getType();
     }
     else if(item->getType() == 5){
-        qDebug()<<item->getType();
+        qDebug()<<u8"多边形"<<item->getType();
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿#include "weaponconfigure.h"
-
+#include <QDebug>
 WeaponConfigure::WeaponConfigure(QWidget * parent)
     :QWidget(parent),
     m_painterColor(Qt::yellow)
@@ -29,8 +29,6 @@ void WeaponConfigure::setWeapon(int mount, const WeaponSpace &weapon)
         emit addedWeapon(mount);
     }
 
-    // 更新位置
-    //setWeaponPosition(mount, weapon.position);
 
     weapon.xx->show();
 }
@@ -74,9 +72,10 @@ void WeaponConfigure::setWeaponPosition(int mount, QPointF pos)
         item.position = pos;
 
         int x = pos.x()*25+150;
-        int y = -pos.y()*23+230;
-        item.xx->move(x,y);
+        int y = pos.y()*23+230;
 
+        item.xx->move(x,y);
+		qDebug() <<"mountId : " << mount << "weaponconfigure : " << "x : " << x  << "y: "<< y;
         update();
     }
 }
@@ -85,6 +84,7 @@ QPointF WeaponConfigure::getWeaponPosition(int mount)
 {
     auto &item = m_weaponMap.find(mount).value();
     QPointF pos = item.position;
+	qDebug() << "mountId : " << mount << pos.x() << (pos.x() - 150) / 25 << pos.y() << (pos.y() - 230) / 23;
     pos.setX((pos.x()- 150)/25);
     pos.setY((pos.y() - 230)/23);
     return pos;

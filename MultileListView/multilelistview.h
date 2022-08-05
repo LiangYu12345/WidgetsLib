@@ -6,7 +6,57 @@
 #include <QListWidgetItem>
 #include <QMouseEvent>
 #include <QVector3D>
-#include "multilelistviewitem.h"
+
+
+class MultileListViewItem;
+
+namespace ListView {
+
+struct FlightPosition
+{
+    double lat;
+    double lon;
+    double alt;
+};
+
+struct FlightEuler{
+    double yaw;
+    double pitch;
+    double roll;
+};
+
+struct FlightPayload{
+    QString name;
+    int  id;
+    FlightPosition coord;
+    FlightEuler euler;
+    double speed;
+};
+
+struct EllipsePayload{
+    QString name;
+    int id;
+    FlightPosition coord;
+    double hRadiu;
+    double vRadiu;
+    double area;
+};
+
+struct RectPayload{
+    QString name;
+    int id;
+    FlightPosition coord;
+    double width;
+    double height;
+    double area;
+};
+
+struct PolygonPayload{
+    QString name;
+    int id;
+    int pointCount;
+};
+};
 
 /// 地图列表
 /// 飞机  编号 名称 经度 维度 高度 方位 俯仰 滚转角 速度
@@ -17,54 +67,6 @@
 /// 多边形： 编号 名称  多个点 （经度 维度 高度）
 class WIDGETSLIB_EXPORT MultileListView : public QListWidget
 {
-    struct Position
-    {
-        double lat;     //纬度：北纬为正
-        double lon;     //经度：东经为正
-        double alt;     //海拔：米
-    };
-
-    struct Euler{
-        double yaw;     //航向
-        double pitch;   //俯仰
-        double roll;    //滚转
-    };
-
-    struct FlightPayload{
-        int       id;
-        QString   name;
-        Position  position;
-        Euler     euler;
-        double    speed;
-    };
-
-    struct EllipsePayload{
-        int       id;
-        QString   name;
-        Position  center;
-        double    hRadiu;
-        double    vRadiu;
-        double    area;
-    };
-
-    struct RectPayload{
-        int       id;
-        QString   name;
-        Position  center;
-        double    height;
-        double    width;
-        double    area;
-    };
-
-    struct PolygonPayload{
-        struct Point{
-            Position coord;
-        };
-        int       id;
-        QString   name;
-        int       count;
-        Point     points[20];
-    };
     Q_OBJECT
 public:
     explicit MultileListView(QWidget * parent = nullptr);
@@ -84,7 +86,10 @@ signals:
     void listItemLeaved();
     void listLeaved();
 
-    void listItemClicked();
+    void listFlightDoubleClicked(ListView::FlightPayload pay);
+    void listEllipseDoubleClicked(ListView::EllipsePayload pay);
+    void listRectDoubleClicked(ListView::RectPayload pay);
+    void listPolygonDoubleClicked(ListView::PolygonPayload pay);
 private:
     bool m_isItemHover;
     MultileListViewItem *m_previous;
