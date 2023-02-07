@@ -3,6 +3,7 @@
 #include <QScroller>
 #include <QDebug>
 #include "multilelistviewitem.h"
+#include <QListWidgetItem>
 
 MultileListView::MultileListView(QWidget *parent)
     : QListWidget(parent),
@@ -32,33 +33,23 @@ MultileListView::MultileListView(QWidget *parent)
     });
 }
 
-void MultileListView::addItem(int Index, const QString &name, const QPixmap &pixmap)
+MultileListViewItem * MultileListView::addItem(int Index, const QString &name, const QPixmap &pixmap)
 {
     MultileListViewItem * item =  nullptr;
-    if(name == "J20"){
+    if(name == u8"J20"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(1);
-        ListView::FlightPayload pay;
-        pay.name = name;
-        pay.id = 1;
-        pay.coord = {1.0,2.0,3.0};
-        item->setFlightPayload(0, pay);
     }
-    else if(name == "F35"){
+    else if(name == u8"F35"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(2);
     }
     else if(name == u8"圆形"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(3);
     }
     else if(name == u8"矩形"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(4);
     }
     else if(name == u8"多边形"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(5);
     }
 
     item->setIcon(pixmap);
@@ -66,34 +57,28 @@ void MultileListView::addItem(int Index, const QString &name, const QPixmap &pix
     item->setTextAlignment(Qt::AlignCenter);
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
-    qDebug()<<item->getType() << item->type() << item->Type << item->UserType;
-
     this->insertItem(Index, item);
+    return item;
 }
 
-void MultileListView::appendItem(const QString &name, const QPixmap &pixmap)
+MultileListViewItem * MultileListView::appendItem(const QString &name, const QPixmap &pixmap)
 {
     auto count = this->count();
     MultileListViewItem * item =  nullptr;
-    if(name == "J20"){
+    if(name == u8"J20"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(1);
     }
-    else if(name == "F35"){
+    else if(name == u8"F35"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(2);
     }
     else if(name == u8"圆形"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(3);
     }
     else if(name == u8"矩形"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(4);
     }
     else if(name == u8"多边形"){
         item = new MultileListViewItem(pixmap, name, this);
-        item->setType(5);
     }
 
     item->setIcon(pixmap);
@@ -102,11 +87,25 @@ void MultileListView::appendItem(const QString &name, const QPixmap &pixmap)
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
     this->insertItem(count, item);
+    return item;
 }
 
 void MultileListView::removeItem(int Index)
 {
-    delete this->takeItem(Index);
+    auto count = this->count();
+    for(int nIndex = 0; nIndex < count; ++nIndex){
+        if(auto item = dynamic_cast<MultileListViewItem *>(this->item(nIndex)))
+            if(item->getFlightPayload().id == Index){
+                this->removeItemWidget((QListWidgetItem *)item);
+                delete item;
+            }
+    }
+}
+
+void MultileListView::setMultileListViewItemData(int Index, AreaPayload &pay)
+{
+    auto item = (MultileListViewItem *)this->item(Index);
+    item->setPayloadData(pay);
 }
 
 void MultileListView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -116,21 +115,20 @@ void MultileListView::mouseDoubleClickEvent(QMouseEvent *event)
         return;
 
     if(item->getType() == 1){
-        qDebug()<<u8"J20"<<item->getType();
-        emit listFlightDoubleClicked(item->getFlightPayload(0));
+        qDebug()<<item->getType()<<item->getFlightPayload().name;
+        emit listFlightDoubleClicked(item->getFlightPayload());
     }
     else if(item->getType() == 2){
-        qDebug()<<u8"F35"<<item->getType();
-        emit listFlightDoubleClicked(item->getFlightPayload(0));
+        qDebug()<<u8"圆"<<item->getType();
+        emit listEllipseDoubleClicked(item->getEllipsePayload());
     }
     else if(item->getType() == 3){
-        qDebug()<<u8"圆"<<item->getType();
+        qDebug()<<u8"矩形"<<item->getType();
+        emit listRectDoubleClicked(item->getRectPayload());
     }
     else if(item->getType() == 4){
-        qDebug()<<u8"矩形"<<item->getType();
-    }
-    else if(item->getType() == 5){
         qDebug()<<u8"多边形"<<item->getType();
+        emit listPolygonDoubleClicked(item->getPolygonPayload());
     }
 }
 
@@ -146,8 +144,8 @@ void MultileListView::mouseMoveEvent(QMouseEvent *e)   // 需判断前后的Item
 
         // 改变之后 判断是否重新进入同一个Item
         // (Note: 进入一个Item 再移出当前Item 现指向null 再重新移入那个Item QListWidget没有识别重新进入Item,因为QListWidget没有leaveItem的信号)
-        //if(item != nullptr)
-        //   emit listItemEntered(item);
+        if(item != nullptr)
+           emit listItemEntered(item);
     }
 
     if(item == nullptr && !m_isItemHover)
@@ -174,9 +172,3 @@ void MultileListView::leaveEvent(QEvent *e)
 
     emit listLeaved();
 }
-
-//QSize MultileListView::sizeHint() const
-//{
-//    qDebug()<<this->count()<<"listWidgetCount";
-//    return QSize();
-//}

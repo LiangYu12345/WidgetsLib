@@ -91,7 +91,6 @@ void AreaInformationDisplay::changeItemVal(int Index, const QString &value)
 
 void AreaInformationDisplay::chooseMode(const int &type)
 {
-    auto column = m_gLayout->columnCount();
     ///  现 飞机 圆形 矩形 显示参数为8 多边形显示参数不固定
     ///  note : 如果个数不统一  即为 动态添加和改变Key
     if(type == 1){
@@ -110,18 +109,6 @@ void AreaInformationDisplay::chooseMode(const int &type)
         dealRowCount(9);
         this->changeItemKey(0,u8"编号");
         this->changeItemKey(1,u8"名称");
-        this->changeItemKey(2,u8"经度(°)");
-        this->changeItemKey(3,u8"纬度(°)");
-        this->changeItemKey(4,u8"高度(Km)");
-        this->changeItemKey(5,u8"方位");
-        this->changeItemKey(6,u8"俯仰");
-        this->changeItemKey(7,u8"滚转");
-        this->changeItemKey(8,u8"速度(Km/s)");
-    }
-    else if(type == 3){
-        dealRowCount(9);
-        this->changeItemKey(0,u8"编号");
-        this->changeItemKey(1,u8"名称");
         this->changeItemKey(2,u8"中心点");
         this->changeItemKey(3,u8"经度(°)");
         this->changeItemKey(4,u8"纬度(°)");
@@ -130,7 +117,7 @@ void AreaInformationDisplay::chooseMode(const int &type)
         this->changeItemKey(7,u8"垂直半径(Km)");
         this->changeItemKey(8,u8"面积(Km^2)");
     }
-    else if(type == 4){
+    else if(type == 3){
         dealRowCount(9);
         this->changeItemKey(0,u8"编号");
         this->changeItemKey(1,u8"名称");
@@ -142,14 +129,12 @@ void AreaInformationDisplay::chooseMode(const int &type)
         this->changeItemKey(7,u8"高(Km)");
         this->changeItemKey(8,u8"面积(Km^2)");
     }
-    else if(type == 5){
+    else if(type == 4){
         dealRowCount(3);
         this->changeItemKey(0,u8"编号");
         this->changeItemKey(1,u8"名称");
         this->changeItemKey(2,u8"顶点数");
-
     }
-
     m_type = type;
 }
 

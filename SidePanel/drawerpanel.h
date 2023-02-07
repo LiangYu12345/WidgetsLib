@@ -32,6 +32,8 @@ public:
     /// 切换开合状态
     void toggle();
 
+    /// 调用updateLayout
+    void updateLayoutInterface();
 public:
     virtual QSize sizeHint() const override;
 

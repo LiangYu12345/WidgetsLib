@@ -18,6 +18,14 @@ add_library(${PROJECT_NAME} SHARED
   Button/switchbutton.cpp
   SidePanel/drawerpanel.h
   SidePanel/drawerpanel.cpp
+  Calendar/calendarwidght.cpp
+  Calendar/calendarwidght.h
+  Calendar/timewidget.h
+  Calendar/timewidget.cpp
+  Calendar/timehand.h
+  Calendar/timehand.cpp
+  Calendar/calendartimemanager.h
+  Calendar/calendartimemanager.cpp
   Table/tablewidget.h
   Table/tablewidget.cpp
   Table/polygontablewidget.h

@@ -6,8 +6,8 @@ ExeclTableWidget::ExeclTableWidget(QWidget * parent)
 
     //菜单栏
     {
-    m_tablewidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    m_menu = new QMenu(m_tablewidget);
+    m_tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    m_menu = new QMenu(m_tableWidget);
 
     QMenu * insertmenu = new QMenu(u8"插入", this);
 
@@ -40,14 +40,14 @@ ExeclTableWidget::ExeclTableWidget(QWidget * parent)
     removemenu->addAction(action);
     m_menu->addMenu(removemenu);
 
-    connect(m_tablewidget,&QWidget::customContextMenuRequested,this,[=](){m_menu->exec(QCursor::pos());});
+    connect(m_tableWidget,&QWidget::customContextMenuRequested,this,[=](){m_menu->exec(QCursor::pos());});
     }
 }
 
 ExeclTableWidget::ExeclTableWidget(int row, int column, QWidget *parent)
 {
-    m_tablewidget->setRowCount(row);
-    m_tablewidget->setColumnCount(column);
+    m_tableWidget->setRowCount(row);
+    m_tableWidget->setColumnCount(column);
 }
 
 void ExeclTableWidget::insertTableCell(int type)
@@ -58,10 +58,10 @@ void ExeclTableWidget::insertTableCell(int type)
     case 2:
         break;
     case 3:
-        insertPoint(m_tablewidget->row(m_currentItem));
+        insertPoint(m_tableWidget->row(m_currentItem));
         break;
     case 4:
-        insertHorizontalHeader(m_tablewidget->column(m_currentItem),WidgetType::Text,"");
+        insertHorizontalHeader(m_tableWidget->column(m_currentItem),WidgetType::Text,"");
         break;
     default:
         ;
@@ -76,10 +76,10 @@ void ExeclTableWidget::removeTableCell(int type)
     case 2:
         break;
     case 3:
-        removePoint(m_tablewidget->row(m_currentItem));
+        removePoint(m_tableWidget->row(m_currentItem));
         break;
     case 4:
-        removeHorizontalHeader(m_tablewidget->column(m_currentItem));
+        removeHorizontalHeader(m_tableWidget->column(m_currentItem));
         break;
     default:
         ;

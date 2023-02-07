@@ -20,50 +20,48 @@ MultileListViewItem::MultileListViewItem(const MultileListViewItem &other)
     QListWidgetItem((QListWidgetItem)other);
 }
 
-void MultileListViewItem::setFlightPayload(int mnt, ListView::FlightPayload &payload)
+void MultileListViewItem::setPayloadData(MultileListView::AreaPayload &payload)
 {
-    if(m_flights.contains(mnt))
-        return;
-    m_flights.insert(mnt, payload);
+    switch (payload.type) {
+        case 1:{
+            m_data.listView.flight = payload.listView.flight;
+            m_type = 1;
+            break;
+        }
+        case 2:{
+            m_data.listView.ellipse = payload.listView.ellipse;
+            m_type = 2;
+            break;
+        }
+        case 3:{
+            m_data.listView.rect = payload.listView.rect;
+            m_type = 3;
+            break;
+        }
+        case 4:{
+            m_data.listView.polygon = payload.listView.polygon;
+            m_type = 4;
+            break;
+        }
+    }
 }
 
-void MultileListViewItem::setEllipsePayload(int mnt, ListView::EllipsePayload &payload)
+const MultileListView::AreaPayload::FlightPayload MultileListViewItem::getFlightPayload() const
 {
-    if(m_ellipses.contains(mnt))
-        return;
-    m_ellipses.insert(mnt, payload);
+    return m_data.listView.flight;
 }
 
-void MultileListViewItem::setRectPayload(int mnt, ListView::RectPayload &payload)
+const MultileListView::AreaPayload::EllipsePayload MultileListViewItem::getEllipsePayload() const
 {
-    if(m_rects.contains(mnt))
-        return;
-    m_rects.insert(mnt, payload);
+    return m_data.listView.ellipse;
 }
 
-void MultileListViewItem::setPolygonPayload(int mnt, ListView::PolygonPayload &payload)
+const MultileListView::AreaPayload::RectPayload MultileListViewItem::getRectPayload() const
 {
-    if(m_polygons.contains(mnt))
-        return;
-    m_polygons.insert(mnt, payload);
+    return m_data.listView.rect;
 }
 
-const ListView::FlightPayload MultileListViewItem::getFlightPayload(int mnt) const
+const MultileListView::AreaPayload::PolygonPayload MultileListViewItem::getPolygonPayload() const
 {
-    return m_flights.value(mnt);
-}
-
-const ListView::EllipsePayload MultileListViewItem::getEllipsePayload(int mnt) const
-{
-    return m_ellipses.value(mnt);
-}
-
-const ListView::RectPayload MultileListViewItem::getRectPayload(int mnt) const
-{
-    return m_rects.value(mnt);
-}
-
-const ListView::PolygonPayload MultileListViewItem::getPolygonPayload(int mnt) const
-{
-    return m_polygons.value(mnt);
+    return m_data.listView.polygon;
 }

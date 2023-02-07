@@ -35,6 +35,9 @@ void F35FrontView::paintEvent(QPaintEvent *e)
 
     QPen pen(m_painterColor,2);
     painter.setPen(pen);
+
+    painter.setPen(QPen());
+
     painter.setRenderHint(QPainter::Antialiasing);
     painter.drawPath(m_path);
 

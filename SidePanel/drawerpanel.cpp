@@ -95,6 +95,11 @@ void DrawerPanel::toggle()
         open();
 }
 
+void DrawerPanel::updateLayoutInterface()
+{
+    this->updateLayout();
+}
+
 QSize DrawerPanel::sizeHint() const
 {
     QSize size;

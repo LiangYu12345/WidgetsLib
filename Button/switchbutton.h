@@ -7,6 +7,10 @@
 #include <QMouseEvent>
 #include <QTimer>
 
+/*!
+ * \brief The SwitchButton class
+ * \details 用于时间管理开关控制按钮
+ */
 class WIDGETSLIB_EXPORT SwitchButton : public QWidget
 {
     Q_OBJECT

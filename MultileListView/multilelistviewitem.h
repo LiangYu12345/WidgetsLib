@@ -19,25 +19,18 @@ public:
 
     MultileListViewItem(const MultileListViewItem &other);
 
-    void setType(const int &type) { m_type = type; }
-    const int getType() const { return m_type; }
+    /// 设置List中的类型，按类型进行分类。 1 ： 飞机  2： 圆  3： 矩形  4： 多边形
+    void setPayloadData(MultileListView::AreaPayload &payload);
 
-    void setFlightPayload(int mnt, ListView::FlightPayload &payload);
-    void setEllipsePayload(int mnt, ListView::EllipsePayload &payload);
-    void setRectPayload(int mnt, ListView::RectPayload &payload);
-    void setPolygonPayload(int mnt, ListView::PolygonPayload &payload);
+    int getType() { return m_type; }
 
-    const ListView::FlightPayload getFlightPayload(int mnt) const;
-    const ListView::EllipsePayload getEllipsePayload(int mnt) const;
-    const ListView::RectPayload getRectPayload(int mnt) const;
-    const ListView::PolygonPayload getPolygonPayload(int mnt) const;
+    const MultileListView::AreaPayload::FlightPayload getFlightPayload() const;
+    const MultileListView::AreaPayload::EllipsePayload getEllipsePayload() const;
+    const MultileListView::AreaPayload::RectPayload getRectPayload() const;
+    const MultileListView::AreaPayload::PolygonPayload getPolygonPayload() const;
 private:
     int m_type;
-
-    QMap<int, ListView::FlightPayload> m_flights;
-    QMap<int, ListView::EllipsePayload> m_ellipses;
-    QMap<int, ListView::RectPayload> m_rects;
-    QMap<int, ListView::PolygonPayload> m_polygons;
+    MultileListView::AreaPayload m_data;
 };
 
 #endif // MULTILELISTVIEWITEM_H

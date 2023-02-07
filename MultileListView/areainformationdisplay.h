@@ -20,7 +20,7 @@ public:
 
     void addItem(int Index, const QString &name, const QString &value);
     void appendItem(const QString &name, const QString &value);
-    /// 当前GridLayout 暂无删除表格的网格  所以在此不做删除  该做隐藏
+    /// 当前GridLayout 暂无删除表格的网格  所以在此不做删除  该做隐藏(该函数不调用)
     void removeItem(int Index);
     void changeItem(int Index, const QString &name, const QString &value);
     void changeItemKey(int Index, const QString &name);
