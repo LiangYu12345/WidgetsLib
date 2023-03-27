@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${PROJECT_NAME} SHARED
+  Resources.qrc
   widgetslib_global.h
   Button/dragbutton.h
   Button/dragbutton.cpp

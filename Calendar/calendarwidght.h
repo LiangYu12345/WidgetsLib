@@ -16,8 +16,11 @@ class WIDGETSLIB_EXPORT CalendarWidght : public QCalendarWidget
 public:
     explicit CalendarWidght(QWidget *parent = nullptr);
 
+    void setCalendarValue(QDate &date);
 signals:
     void calendarCellClicked(const QDate &data);
+    void calendarSureBtnClicked(const QDate &data);
+    void calendarCancelBtnClicked();
 protected:
     void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const;
 private:
@@ -35,6 +38,10 @@ private:
     QLabel          *m_dataLabel;
 
     int             m_month;
+    QDate           m_date;
+
+    QPushButton     *m_sureBtn;
+    QPushButton     *m_cancelBtn;
 };
 
 #endif // CALENDARWIDGHT_H

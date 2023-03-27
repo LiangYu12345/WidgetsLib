@@ -20,13 +20,16 @@ public:
     explicit TimeWidget(QWidget *parent = nullptr);
     ~TimeWidget();
 
-    void setHourValue(const int &hour);
-    void setMinuteValue(const int &minute);
     void setSecondValue(const int &second);
     void setS(int second);
 
+    void setDragModel(bool isDrag);
 public slots:
     void updateDis(double second);
+
+    void onSecondHandChanged(int angle);
+    void onMinuteHandChanged(int angle);
+    void onHourHandChanged(int angle);
 signals:
     void sigTimeChanged(int);
 protected:
@@ -56,16 +59,11 @@ private:
     QColor              m_minuteColor;
     QColor              m_secondColor;
 
-    double              m_hourValue;    /// < 时针数值
-    double              m_minuteValue;  /// < 分针数值
-    double              m_secondValue;  /// < 秒针数值
+    int                 m_secondValue;
 
-    QTime               m_time;         /// < 时间数值
+    bool                m_isDrop;         /// < 拖拽
 
-    bool                isDrop;         /// < 拖拽
-
-    QPushButton         *m_amBtn;       /// < 上午
-    QPushButton         *m_pmBtn;       /// < 下午
+    QLabel              *m_Label;       /// < 上下午表示
 };
 
 #endif // TIMEWIDGET_H

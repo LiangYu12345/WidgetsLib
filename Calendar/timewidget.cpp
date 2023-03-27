@@ -25,20 +25,6 @@ TimeWidget::~TimeWidget()
     delete m_timer;
 }
 
-void TimeWidget::setHourValue(const int &hour)
-{
-    if(m_hourValue == hour)
-        return;
-    m_hourValue = hour;
-}
-
-void TimeWidget::setMinuteValue(const int &minute)
-{
-    if(m_minuteValue == minute)
-        return;
-    m_minuteValue = minute;
-}
-
 void TimeWidget::setSecondValue(const int &second)
 {
     if(m_secondValue == second)
@@ -127,11 +113,9 @@ void TimeWidget::Init()
     m_minuteHand->setHandPoints(m_minutes);
     m_secondHand->setHandPoints(m_seconds);
 
-    m_amBtn = new QPushButton(u8"AM", this);
-    m_pmBtn = new QPushButton(u8"PM", this);
-
-    m_amBtn->setGeometry(300 - m_amBtn->width() / 2, 60 - m_amBtn->height(), 30 , 20);
-    m_pmBtn->setGeometry(300 - m_pmBtn->width() / 2, 80 - m_pmBtn->height(), 30 , 20);
+    m_Label = new QLabel("AM", this);
+    m_Label->setGeometry(300 - m_Label->width() / 2, 60 - m_Label->height(), 30 , 20);
+    m_Label->setFont(QFont("微软雅黑", 12, QFont::Thin, Qt::blue));
 
     m_scene->addItem(m_hourHand);
     m_scene->addItem(m_minuteHand);
@@ -150,12 +134,6 @@ void TimeWidget::Init()
     m_minuteHand->show();
     m_secondHand->show();
 
-    m_time = QTime::currentTime();
-
-    m_hourValue = m_time.hour();
-    m_minuteValue = m_time.minute();
-    m_secondValue = m_time.second();
-
     this->setGeometry(0, 0, 300, 300);
 
     /// 使其三个指针同步在同一的旋转中心点
@@ -163,7 +141,7 @@ void TimeWidget::Init()
     m_minuteHand->setPos(150 - m_minuteHand->boundingRect().width() / 2, 150 - m_minuteHand->boundingRect().height() * 4 / 5);
     m_secondHand->setPos(150 - m_secondHand->boundingRect().width() / 2, 150 - m_secondHand->boundingRect().height() * 4 / 5);
 
-    detectionTime(m_hourValue);
+    detectionTime(m_secondValue / 3600 % 24);
 }
 
 void TimeWidget::InitConnect()
@@ -171,41 +149,13 @@ void TimeWidget::InitConnect()
     connect(m_timer, &QTimer::timeout, this, &TimeWidget::update);
     connect(this, &TimeWidget::sigTimeChanged, this, &TimeWidget::updateDis);
 
-    connect(m_hourHand, &TimeHand::mouseMoveAngle, this, [=](int angle){
-        m_timer->stop();
-        auto rotateH = m_hourHand->rotation();
-        auto value = (rotateH+angle) / 30.0 * 3600;
-        setS(value);
-        m_timer->start();
-    });
-    connect(m_minuteHand, &TimeHand::mouseMoveAngle, this, [=](int angle){
-        m_timer->stop();
-        auto rotateH = m_hourHand->rotation();
-        auto rotateM = m_minuteHand->rotation() - qFloor(m_minuteHand->rotation()/360) * 360;
-
-        auto value = qFloor(rotateH / 30.0) * 3600
-                +(rotateM+angle) / 6 * 60;
-        setS(value);
-        m_timer->start();
-    });
-    connect(m_secondHand, &TimeHand::mouseMoveAngle, this, [=](int angle){
-        m_timer->stop();
-        auto rotateH = m_hourHand->rotation();
-        auto rotateM = m_minuteHand->rotation() - qFloor(m_minuteHand->rotation()/360) * 360;
-        auto rotateS = m_secondHand->rotation() - qFloor(m_secondHand->rotation()/360) * 360;
-
-        auto value = qFloor(rotateH / 30.0) * 3600
-                + qFloor(rotateM / 6) * 60
-                + (rotateS+angle)/6;
-
-        setS(value);
-        m_timer->start();
-    });
+    connect(m_hourHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onHourHandChanged);
+    connect(m_minuteHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onMinuteHandChanged);
+    connect(m_secondHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onSecondHandChanged);
 }
 
 void TimeWidget::update()
 {
-    m_time = QTime::currentTime();
     m_secondValue ++;
     setS(m_secondValue);
 }
@@ -213,12 +163,10 @@ void TimeWidget::update()
 void TimeWidget::detectionTime(const int &hour)
 {
     if(hour >= 12){
-        m_amBtn->setCheckable(false);
-        m_pmBtn->setCheckable(true);
+        m_Label->setText("PM");
     }
     else{
-        m_amBtn->setCheckable(true);
-        m_pmBtn->setCheckable(false);
+        m_Label->setText("AM");
     }
 }
 
@@ -228,11 +176,66 @@ void TimeWidget::setS(int second)
    emit sigTimeChanged(m_secondValue);
 }
 
+void TimeWidget::setDragModel(bool isDrag)
+{
+    if(m_isDrop == isDrag)
+        return;
+    m_isDrop = isDrag;
+
+    if(isDrag){
+        connect(m_hourHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onHourHandChanged);
+        connect(m_minuteHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onMinuteHandChanged);
+        connect(m_secondHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onSecondHandChanged);
+    }
+    else{
+        disconnect(m_hourHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onHourHandChanged);
+        disconnect(m_minuteHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onMinuteHandChanged);
+        disconnect(m_secondHand, &TimeHand::mouseMoveAngle, this, &TimeWidget::onSecondHandChanged);
+    }
+}
+
 void TimeWidget::updateDis(double second)
 {
-    m_secondHand->setRotation(second*6);
+    m_secondHand->setRotation(second * 6);
     m_minuteHand->setRotation((second / 60.0) * 6);
     m_hourHand->setRotation((second / 3600.0) * 30);
 
-    detectionTime(m_hourValue);
+    auto hour = m_secondValue / 3600 % 24;
+    detectionTime(hour);
+}
+
+void TimeWidget::onSecondHandChanged(int angle)
+{
+    m_timer->stop();
+    auto rotateH = m_hourHand->rotation();
+    auto rotateM = m_minuteHand->rotation() - qFloor(m_minuteHand->rotation()/360) * 360;
+    auto rotateS = m_secondHand->rotation() - qFloor(m_secondHand->rotation()/360) * 360;
+
+    auto value = qFloor(rotateH / 30.0) * 3600
+            + qFloor(rotateM / 6) * 60
+            + (rotateS+angle)/6;
+
+    setS(value);
+    m_timer->start();
+}
+
+void TimeWidget::onMinuteHandChanged(int angle)
+{
+    m_timer->stop();
+    auto rotateH = m_hourHand->rotation();
+    auto rotateM = m_minuteHand->rotation() - qFloor(m_minuteHand->rotation()/360) * 360;
+
+    auto value = qFloor(rotateH / 30.0) * 3600
+            +(rotateM+angle) / 6 * 60;
+    setS(value);
+    m_timer->start();
+}
+
+void TimeWidget::onHourHandChanged(int angle)
+{
+    m_timer->stop();
+    auto rotateH = m_hourHand->rotation();
+    auto value = (rotateH+angle) / 30.0 * 3600;
+    setS(value);
+    m_timer->start();
 }

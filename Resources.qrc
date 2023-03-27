@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resource/am.png</file>
+        <file>Resource/amTran.png</file>
+        <file>Resource/amWhite.png</file>
+        <file>Resource/pm.png</file>
+        <file>Resource/pmTran.png</file>
+        <file>Resource/pmWhite.png</file>
+    </qresource>
+</RCC>

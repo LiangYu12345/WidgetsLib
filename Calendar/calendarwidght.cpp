@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QLocale>
 #include <QTextCharFormat>
+#include <QMouseEvent>
 
 class CalendarStyle : public QProxyStyle
 {
@@ -27,6 +28,16 @@ CalendarWidght::CalendarWidght(QWidget *parent)
     InitConnect();
 }
 
+void CalendarWidght::setCalendarValue(QDate &date)
+{
+    if(m_date == date)
+        return;
+    m_date = date;
+
+    setDataLabelText(date.year(), date.month());
+    m_month = date.month();
+}
+
 void CalendarWidght::paintCell(QPainter *painter, const QRect &rect, const QDate &date) const
 {
     if(date == selectedDate()){
@@ -38,7 +49,7 @@ void CalendarWidght::paintCell(QPainter *painter, const QRect &rect, const QDate
         painter->drawText(rect, Qt::AlignCenter, QString::number(date.day()));
         painter->restore();
     }
-    else if(date == QDate::currentDate()){
+    else if(date == m_date){
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing);
         painter->setPen(Qt::NoPen);
@@ -110,16 +121,26 @@ void CalendarWidght::Init()
 
     hlayout->setContentsMargins(12, 0, 12, 0);
     hlayout->setSpacing(6);
-
     top->setLayout(hlayout);
+
+    QWidget *bottom = new QWidget(this);
+    auto bhlayout = new QHBoxLayout;
+    m_sureBtn = new QPushButton(u8"确认");
+    m_cancelBtn = new QPushButton(u8"取消");
+
+    bhlayout->addWidget(m_sureBtn);
+    bhlayout->addStretch();
+    bhlayout->addWidget(m_cancelBtn);
+    bhlayout->setContentsMargins(12, 0, 12, 0);
+    bhlayout->setSpacing(6);
+    bottom->setLayout(bhlayout);
+
     this->setStyleSheet("QWidget{background: transparent; color: #000000; boder: 1px solid #dadde3; font-size:20px;"
                        "font-family:Microsoft YaHei; background-color: rgb(255, 255, 255);}");
 
     auto vBodyLayout = qobject_cast<QVBoxLayout *>(layout());
     vBodyLayout->insertWidget(0, top);
-
-    setDataLabelText(selectedDate().year(), selectedDate().month());
-    m_month = selectedDate().month();
+    vBodyLayout->addWidget(bottom);
 }
 
 void CalendarWidght::InitConnect()
@@ -135,9 +156,18 @@ void CalendarWidght::InitConnect()
     });
 
     connect(this, &QCalendarWidget::clicked, [this](QDate date){
+        m_date = date;
+
         setDataLabelText(date.year(), date.month());
         m_month = date.month();
         emit calendarCellClicked(date);
+    });
+
+    connect(m_sureBtn, &QPushButton::clicked, [=](){
+        emit calendarSureBtnClicked(m_date);
+    });
+    connect(m_cancelBtn, &QPushButton::clicked, [=](){
+        emit calendarCancelBtnClicked();
     });
 }
 
